@@ -1,17 +1,22 @@
 package com.example.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Pharmacy {
 
-	@Id
+	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String pharmacyRegNumber;
 	private String pharmacyName;
 	private String pharmacyContactNum;
 	private String pharmacyAddress;
 	private String pharmacyEmail;
+	
+	//Each Pharmacy will have a Patient list
+	
 	
 	public String getPharmacyRegNumber() {
 		return pharmacyRegNumber;

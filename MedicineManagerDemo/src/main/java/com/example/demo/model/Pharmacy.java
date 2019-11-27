@@ -1,71 +1,133 @@
 package com.example.demo.model;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Pharmacy {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String pharmacyRegNumber;
-	private String pharmacyName;
-	private String pharmacyContactNum;
-	private String pharmacyAddress;
+	@Id
 	private String pharmacyEmail;
 	
-	//Each Pharmacy will have a Patient list
+	private String pharmacyRegNumber;
+	
+	@NotBlank
+	private String pharmacyName;
 	
 	
-	public String getPharmacyRegNumber() {
-		return pharmacyRegNumber;
-	}
-	public void setPharmacyRegNumber(String pharmacyRegNumber) {
-		this.pharmacyRegNumber = pharmacyRegNumber;
-	}
+	private String pharmacyContactNum;
+	private String pharmacyAddress;
+
+	
+	@OneToMany(mappedBy = "patientPharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Patient> pharmacyPatientList;
 	
 	
-	public String getPharmacyName() {
-		return pharmacyName;
-	}
-	public void setPharmacyName(String pharmacyName) {
-		this.pharmacyName = pharmacyName;
-	}
+//	@ManyToMany
+//	private List<Medicine> medicineStock;
 	
+
+
 	
-	public String getPharmacyContactNum() {
-		return pharmacyContactNum;
-	}
-	public void setPharmacyContactNum(String pharmacyContactNum) {
-		this.pharmacyContactNum = pharmacyContactNum;
-	}
-	
-	
-	public String getPharmacyAddress() {
-		return pharmacyAddress;
-	}
-	public void setPharmacyAddress(String pharmacyAddress) {
-		this.pharmacyAddress = pharmacyAddress;
-	}
-	
-	
+
 	public String getPharmacyEmail() {
 		return pharmacyEmail;
 	}
+
+	
+
+	public Pharmacy() {}
+
+
+
+	public Pharmacy(String pharmacyEmail, String pharmacyRegNumber, String pharmacyName, String pharmacyContactNum,
+		String pharmacyAddress, Set<Patient> pharmacyPatientList) {
+	super();
+	this.pharmacyEmail = pharmacyEmail;
+	this.pharmacyRegNumber = pharmacyRegNumber;
+	this.pharmacyName = pharmacyName;
+	this.pharmacyContactNum = pharmacyContactNum;
+	this.pharmacyAddress = pharmacyAddress;
+	this.pharmacyPatientList = pharmacyPatientList;
+}
+
+
 	public void setPharmacyEmail(String pharmacyEmail) {
 		this.pharmacyEmail = pharmacyEmail;
 	}
-	
-	
+
+
+	public String getPharmacyRegNumber() {
+		return pharmacyRegNumber;
+	}
+
+
+	public void setPharmacyRegNumber(String pharmacyRegNumber) {
+		this.pharmacyRegNumber = pharmacyRegNumber;
+	}
+
+
+	public String getPharmacyName() {
+		return pharmacyName;
+	}
+
+
+	public void setPharmacyName(String pharmacyName) {
+		this.pharmacyName = pharmacyName;
+	}
+
+
+	public String getPharmacyContactNum() {
+		return pharmacyContactNum;
+	}
+
+
+	public void setPharmacyContactNum(String pharmacyContactNum) {
+		this.pharmacyContactNum = pharmacyContactNum;
+	}
+
+
+	public String getPharmacyAddress() {
+		return pharmacyAddress;
+	}
+
+
+	public void setPharmacyAddress(String pharmacyAddress) {
+		this.pharmacyAddress = pharmacyAddress;
+	}
+
+
+	public Set<Patient> getPharmacyPatientList() {
+		return pharmacyPatientList;
+	}
+
+
+	public void setPharmacyPatientList(Set<Patient> pharmacyPatientList) {
+		this.pharmacyPatientList = pharmacyPatientList;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Pharmacy [pharmacyRegNumber=" + pharmacyRegNumber + ", pharmacyName=" + pharmacyName
-				+ ", pharmacyContactNum=" + pharmacyContactNum + ", pharmacyAddress=" + pharmacyAddress
-				+ ", pharmacyEmail=" + pharmacyEmail + "]";
-	}
+		return "Pharmacy [pharmacyEmail=" + pharmacyEmail + ", pharmacyRegNumber=" + pharmacyRegNumber
+				+ ", pharmacyName=" + pharmacyName + ", pharmacyContactNum=" + pharmacyContactNum + ", pharmacyAddress="
+				+ pharmacyAddress + ", pharmacyPatientList=" + pharmacyPatientList + "]";
+	}	
 	
 	
+	
+
 	
 	
 	

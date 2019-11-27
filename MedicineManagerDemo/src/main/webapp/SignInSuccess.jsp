@@ -8,7 +8,11 @@
 </head>
 <body>
 	<h2>Welcome ${pharmacy.pharmacyName}</h2>
-
+	
+<form action="/deletePharmacy">
+<input type="hidden" value ={pharmacy.pharmacyRegNumber} name="myPharmacyRegNumber"></input>
+<input type="submit" value="Delete Pharmacy">
+</form>
 	
 </body>
 </html>

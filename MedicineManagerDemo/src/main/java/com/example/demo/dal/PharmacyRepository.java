@@ -7,8 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.demo.model.Pharmacy;
 
-public interface PharmacyRepository extends JpaRepository<Pharmacy, String>{
+public interface PharmacyRepository extends JpaRepository<Pharmacy, Integer>{
 	
 	List<Pharmacy> findByPharmacyName(String pharmacyName);
+	
 
 }

@@ -17,12 +17,19 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class Pharmacy {
 
+	//Persistence Provider must assign primary key Identity using column.
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int pharmacyID;
+	
+	
 	private String pharmacyEmail;
+	
+	private String pharmacyPassword;
 	
 	private String pharmacyRegNumber;
 	
-	@NotBlank
+	
 	private String pharmacyName;
 	
 	
@@ -47,6 +54,12 @@ public class Pharmacy {
 
 	
 
+	public int getPharmacyID() {
+		return pharmacyID;
+	}
+
+
+
 	public Pharmacy() {}
 
 
@@ -61,11 +74,36 @@ public class Pharmacy {
 	this.pharmacyAddress = pharmacyAddress;
 	this.pharmacyPatientList = pharmacyPatientList;
 }
+	
+	
+
+
+	public Pharmacy(String pharmacyEmail, String pharmacyPassword) {
+		super();
+		this.pharmacyEmail = pharmacyEmail;
+		this.pharmacyPassword = pharmacyPassword;
+	}
+
 
 
 	public void setPharmacyEmail(String pharmacyEmail) {
 		this.pharmacyEmail = pharmacyEmail;
 	}
+	
+	
+	
+
+
+	public String getPharmacyPassword() {
+		return pharmacyPassword;
+	}
+
+
+
+	public void setPharmacyPassword(String pharmacyPassword) {
+		this.pharmacyPassword = pharmacyPassword;
+	}
+
 
 
 	public String getPharmacyRegNumber() {
@@ -117,6 +155,8 @@ public class Pharmacy {
 		this.pharmacyPatientList = pharmacyPatientList;
 	}
 
+	
+	
 
 	@Override
 	public String toString() {

@@ -21,18 +21,18 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
+//@Entity
 public class Prescription {
 	
-	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
+//	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
 	int prescriptionID;
 	
-	@ManyToOne(fetch =FetchType.LAZY)
-	@JoinColumn(name = "patient_id")
+//	@ManyToOne(fetch =FetchType.LAZY)
+//	@JoinColumn(name = "patient_id")
 	Patient patientOnPrescription;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Prescriber_ID")
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "Prescriber_ID")
 	Doctor prescriber;
 	
 	

@@ -4,12 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.example.demo.model.user.UserPharmacy;
 
 //Pharmacy may store doctor details
-@Entity
+//@Entity
 public class Doctor {
 	
-	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	int doctorID;
 	
 	String doctorName;
@@ -17,8 +20,17 @@ public class Doctor {
 	String doctorContactNum;
 	String doctorRegNum;
 	
+	@ManyToOne
+	UserPharmacy pharmacy;
 	
 	
+	
+	public UserPharmacy getPharmacy() {
+		return pharmacy;
+	}
+	public void setPharmacy(UserPharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
 	public int getDoctorID() {
 		return doctorID;
 	}

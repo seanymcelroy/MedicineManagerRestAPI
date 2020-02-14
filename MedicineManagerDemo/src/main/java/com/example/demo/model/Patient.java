@@ -16,10 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
+//@Entity
 public class Patient {
 	
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int patientId;
 	
 	private String patientFirstName;

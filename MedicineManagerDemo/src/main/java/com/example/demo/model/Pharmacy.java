@@ -14,12 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
-@Entity
+//@Entity
 public class Pharmacy {
 
 	//Persistence Provider must assign primary key Identity using column.
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int pharmacyID;
 	
 	

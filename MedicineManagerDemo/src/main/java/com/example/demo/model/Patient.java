@@ -16,85 +16,105 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity
+@Entity
 public class Patient {
 	
-//	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int patientId;
 	
 	private String patientFirstName;
 	private String patientSurname;
-	private String patientPhoneNumber;
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pharmacy_id")
-	private Pharmacy patientPharmacy;
-	
-	@OneToMany(mappedBy = "patientOnPrescription",  cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Prescription> prescriptions;
-	
+	private String address;
+	private String phoneNumber;
 	//Year month date
 	@Temporal(TemporalType.DATE)
-	private Date patientDateOfBirth;
+	private Date dateOfBirth;
 	
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "pharmacy_id")
+//	private Pharmacy patientPharmacy;
+	
+//	@OneToMany(mappedBy = "patientOnPrescription",  cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Prescription> prescriptions;
+//	
+//
+//    public void addPrescription(Prescription pres) {
+//    	prescriptions.add(pres);
+//        pres.setPatient(this);
+//    }
+ 
+//    List<Prescriptions> prescriptions = entityManager.createQuery(
+//    	    "select prescr " +
+//    	    "from Prescription prescr " +
+//    	    "where presc.patient.id = :postId", PostComment.class)
+//    	.setParameter( "postId", 1L )
+//    	.getResultList();
 	
 	//Each Pharmacy Patient will have a list of Prescriptions
 	
 	Patient(){}
-	
-	
-	
-	
 
-	
-	public Patient(int patientId, String patientFirstName, String patientSurname, String patientPhoneNumber) {
-		super();
-		this.patientId = patientId;
-		this.patientFirstName = patientFirstName;
-		this.patientSurname = patientSurname;
-		this.patientPhoneNumber = patientPhoneNumber;
-	}
-
-
-	//Getters Plus Setters for Patient
 
 	public int getPatientId() {
 		return patientId;
 	}
+
+
 	public void setPatientId(int patientId) {
 		this.patientId = patientId;
 	}
-	
+
+
 	public String getPatientFirstName() {
 		return patientFirstName;
 	}
+
+
 	public void setPatientFirstName(String patientFirstName) {
 		this.patientFirstName = patientFirstName;
 	}
-	
+
+
 	public String getPatientSurname() {
 		return patientSurname;
 	}
+
+
 	public void setPatientSurname(String patientSurname) {
 		this.patientSurname = patientSurname;
 	}
-//	public Date getPatientDateOfBirth() {
-//		return patientDateOfBirth;
-//	}
-//	public void setPatientDateOfBirth(Date patientDateOfBirth) {
-//		this.patientDateOfBirth = patientDateOfBirth;
-//	}
-	
-	public String getPatientPhoneNumber() {
-		return patientPhoneNumber;
-	}
-	public void setPatientPhoneNumber(String patientPhoneNumber) {
-		this.patientPhoneNumber = patientPhoneNumber;
-	}
-	
 
-	
-	
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+
 
 }

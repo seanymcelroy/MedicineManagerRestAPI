@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ import com.example.demo.services.MedicineService;
 //CrossOrigin allows resource sharing to other servers
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
-@RequestMapping("/medicine")
+@RequestMapping("/users/{pharmacyID}/medicine")
 public class MedicineController {
 	
 	@Autowired
@@ -40,11 +41,21 @@ public class MedicineController {
 	
 	
 	@PostMapping("/addMeds")
-	public String addMedicine(@RequestBody Medicine m){
+	public List<Medicine> addMedicine(@RequestBody Medicine[] medicineList){
 		
-		medService.saveMed(m);
-		return "pray this works";
+		medService.saveListOfMedicine(Arrays.asList(medicineList));
+		return medService.getMedicines();
 		
+	}
+	
+	@GetMapping("/all")
+	public List<Medicine> showMeds(){
+		return medService.getMedicines();
+	}
+	
+	@GetMapping("/{medicineID}")
+	public Medicine getMedByID(@PathVariable String medicineID){
+		return medService.getMedicineByID(medicineID);
 	}
 	
 	

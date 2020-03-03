@@ -3,7 +3,9 @@ package com.example.demo.model;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,27 +15,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity
+@Entity
 public class Prescription {
 	
-//	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
 	int prescriptionID;
 	
-//	@ManyToOne(fetch =FetchType.LAZY)
-//	@JoinColumn(name = "patient_id")
+	@ManyToOne(fetch =FetchType.LAZY)
+	@JoinColumn(name = "patient_id")
 	Patient patientOnPrescription;
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "Prescriber_ID")
-	Doctor prescriber;
 	
 	
 	
@@ -43,20 +43,69 @@ public class Prescription {
 //	@Column(name="Quantity_Prescribed")
 //	@MapKeyJoinColumn(name="Medicine_ID")
 //    Map<Medicine, Integer> prescribedMeds;
-//	//Medicine prescribedMed;
+//	Medicine prescribedMed;
 	
-	@ManyToMany
-	private List<Medicine> medicinesPrescribed;
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+//	@JoinTable(name = "medicines_prescribed", joinColumns =@JoinColumn(name="prescription_id"), inverseJoinColumns = @JoinColumn(name="medicine_id"))
+	private Set<LineItem> items;
 	
-	String prescriptionInstructions;
+	
+
+
+	String instructions;
 	String status; //BeingPrepared + Ready for PickUp + Dispensed
 	
-	@Temporal(TemporalType.DATE)
-	Date prescriptionCreationDate;
+//	@Temporal(TemporalType.DATE)
+//	Date prescriptionCreationDate;
+
+	
+	//Prescription definetly has a pharmacy
+//	Pharmacy prescriptionFulfillers
+	
+	
+	
+	
+	
+	
 
 	public int getPrescriptionID() {
 		return prescriptionID;
 	}
+
+
+
+
+
+
+
+
+
+
+	public Set<LineItem> getItems() {
+		return items;
+	}
+
+
+
+
+
+
+
+
+
+
+	public void setItems(Set<LineItem> items) {
+		this.items = items;
+	}
+
+
+
+
+
+
+
+
+
 
 	public void setPrescriptionID(int prescriptionID) {
 		this.prescriptionID = prescriptionID;
@@ -70,28 +119,12 @@ public class Prescription {
 		this.patientOnPrescription = patientOnPrescription;
 	}
 
-	public Doctor getPrescriber() {
-		return prescriber;
+	public String getInstructions() {
+		return instructions;
 	}
 
-	public void setPrescriber(Doctor prescriber) {
-		this.prescriber = prescriber;
-	}
-
-	public List<Medicine> getMedicinesPrescribed() {
-		return medicinesPrescribed;
-	}
-
-	public void setMedicinesPrescribed(List<Medicine> medicinesPrescribed) {
-		this.medicinesPrescribed = medicinesPrescribed;
-	}
-
-	public String getPrescriptionInstructions() {
-		return prescriptionInstructions;
-	}
-
-	public void setPrescriptionInstructions(String prescriptionInstructions) {
-		this.prescriptionInstructions = prescriptionInstructions;
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
 	}
 
 	public String getStatus() {
@@ -102,22 +135,15 @@ public class Prescription {
 		this.status = status;
 	}
 
-	public Date getPrescriptionCreationDate() {
-		return prescriptionCreationDate;
-	}
-
-	public void setPrescriptionCreationDate(Date prescriptionCreationDate) {
-		this.prescriptionCreationDate = prescriptionCreationDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Prescription [prescriptionID=" + prescriptionID + ", patientOnPrescription=" + patientOnPrescription
-				+ ", prescriber=" + prescriber + ", medicinesPrescribed=" + medicinesPrescribed
-				+ ", prescriptionInstructions=" + prescriptionInstructions + ", status=" + status
-				+ ", prescriptionCreationDate=" + prescriptionCreationDate + "]";
-	}
+//	public Date getPrescriptionCreationDate() {
+//		return prescriptionCreationDate;
+//	}
+//
+//	public void setPrescriptionCreationDate(Date prescriptionCreationDate) {
+//		this.prescriptionCreationDate = prescriptionCreationDate;
+//	}
 	
+
 	
 	
 }

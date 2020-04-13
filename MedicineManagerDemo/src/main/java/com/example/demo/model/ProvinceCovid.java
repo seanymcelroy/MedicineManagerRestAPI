@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-public class LocationCovidStats {
+public class ProvinceCovid {
 
 	    private String province;
 	    private String country;

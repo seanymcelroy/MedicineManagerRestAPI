@@ -17,7 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.LocationCovidStats;
+import com.example.demo.model.ProvinceCovid;
 
 @Service
 @EnableScheduling
@@ -27,10 +27,10 @@ public class Covid19Service {
 	private static String VIRUS_DATA_DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
 	private static String VIRUS_DATA_RECOVERED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
 	
-	private List<LocationCovidStats> allStats = new ArrayList<>();
+	private List<ProvinceCovid> allStats = new ArrayList<>();
 	
 	
-	public List<LocationCovidStats> getAllCovidData() {
+	public List<ProvinceCovid> getAllCovidData() {
 		return allStats;
 	}
 
@@ -99,7 +99,7 @@ public class Covid19Service {
         
         //Go through confirmed list
         for (CSVRecord record : recordsConfirmed) {
-        	LocationCovidStats singleLocation = new LocationCovidStats();
+        	ProvinceCovid singleLocation = new ProvinceCovid();
   	
             singleLocation.setProvince(record.get("Province/State"));
             singleLocation.setCountry(record.get("Country/Region"));
@@ -173,9 +173,9 @@ public class Covid19Service {
 	
 	
 	
-	public int findIndexInList(String province, String country, List<LocationCovidStats> locations)
+	public int findIndexInList(String province, String country, List<ProvinceCovid> locations)
 			{
-					for (LocationCovidStats loc : locations) {
+					for (ProvinceCovid loc : locations) {
 						
 						if (loc.getProvince().equals(province) && loc.getCountry().equals(country)) {
 							return locations.indexOf(loc);

@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +45,13 @@ public class PrescriptionController {
 	
 	@GetMapping("/all")
 	public List<Prescription> getAllPrescriptions(@PathVariable String pharmacyID){
-		return prescriptionService.getAllMyPrescriptions(pharmacyID);
+		return prescriptionService.getPharmacyPrescriptions(pharmacyID);
+		
+	}
+	
+	@GetMapping("/{prescriptionID}")
+	public Optional<Prescription> getAllPrescriptions(@PathVariable String pharmacyID, @PathVariable String prescriptionID){
+		return prescriptionService.getPrescriptionByID(pharmacyID, prescriptionID);
 		
 	}
 	

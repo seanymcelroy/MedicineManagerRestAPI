@@ -83,6 +83,14 @@
 		    <version>9.0.27</version>
 		</dependency>
 		
+		
+		<!-- CSV parser library Apache -->
+		<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-csv</artifactId>
+    		 <version>1.8</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

@@ -31,22 +31,12 @@ public class Prescription {
 	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
 	int prescriptionID;
 	
-	@ManyToOne(fetch =FetchType.LAZY)
+	@ManyToOne(fetch =FetchType.EAGER)
 	@JoinColumn(name = "patient_id")
 	Patient patientOnPrescription;
 	
-	
-	
-//	@ElementCollection
-//	@CollectionTable(name="Prescription_Medicines")
-//	@JoinColumn(name="Prescription_ID")
-//	@Column(name="Quantity_Prescribed")
-//	@MapKeyJoinColumn(name="Medicine_ID")
-//    Map<Medicine, Integer> prescribedMeds;
-//	Medicine prescribedMed;
-	
+
 	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-//	@JoinTable(name = "medicines_prescribed", joinColumns =@JoinColumn(name="prescription_id"), inverseJoinColumns = @JoinColumn(name="medicine_id"))
 	private Set<LineItem> items;
 	
 	
@@ -64,21 +54,10 @@ public class Prescription {
 	
 	
 	
-	
-	
-	
 
 	public int getPrescriptionID() {
 		return prescriptionID;
 	}
-
-
-
-
-
-
-
-
 
 
 	public Set<LineItem> getItems() {
@@ -87,24 +66,9 @@ public class Prescription {
 
 
 
-
-
-
-
-
-
-
 	public void setItems(Set<LineItem> items) {
 		this.items = items;
 	}
-
-
-
-
-
-
-
-
 
 
 	public void setPrescriptionID(int prescriptionID) {

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,19 @@ public class PrescriptionService {
 			prescriptionRepo.save(p);
 		}
 		
-		public List<Prescription> getAllMyPrescriptions(String pharmacyID){
+		//Must be changed for specific pharmacy
+		public List<Prescription> getPharmacyPrescriptions(String pharmacyID){
 			return prescriptionRepo.findAll();
 			
+		}
+		
+		//Must be changed for specific patient
+		public List<Prescription> getPatientPrescriptions(String patientID){
+			return prescriptionRepo.findAll();
+			
+		}
+		
+		public Optional<Prescription> getPrescriptionByID(String pharmacyID, String prescriptionID) {
+			return prescriptionRepo.findById(Integer.parseInt(prescriptionID));
 		}
 }

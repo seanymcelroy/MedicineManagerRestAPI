@@ -27,7 +27,7 @@ public class Pharmacy {
 	
 	private String pharmacyPassword;
 	
-	private String pharmacyRegNumber;
+	private String psiRegistrationNumber;
 	
 	
 	private String pharmacyName;
@@ -60,29 +60,11 @@ public class Pharmacy {
 
 
 
+	//Empty Constructor
 	public Pharmacy() {}
 
 
 
-	public Pharmacy(String pharmacyEmail, String pharmacyRegNumber, String pharmacyName, String pharmacyContactNum,
-		String pharmacyAddress, Set<Patient> pharmacyPatientList) {
-	super();
-	this.pharmacyEmail = pharmacyEmail;
-	this.pharmacyRegNumber = pharmacyRegNumber;
-	this.pharmacyName = pharmacyName;
-	this.pharmacyContactNum = pharmacyContactNum;
-	this.pharmacyAddress = pharmacyAddress;
-	this.pharmacyPatientList = pharmacyPatientList;
-}
-	
-	
-
-
-	public Pharmacy(String pharmacyEmail, String pharmacyPassword) {
-		super();
-		this.pharmacyEmail = pharmacyEmail;
-		this.pharmacyPassword = pharmacyPassword;
-	}
 
 
 
@@ -106,14 +88,18 @@ public class Pharmacy {
 
 
 
-	public String getPharmacyRegNumber() {
-		return pharmacyRegNumber;
+
+
+	public String getPsiRegistrationNumber() {
+		return psiRegistrationNumber;
 	}
 
 
-	public void setPharmacyRegNumber(String pharmacyRegNumber) {
-		this.pharmacyRegNumber = pharmacyRegNumber;
+
+	public void setPsiRegistrationNumber(String psiRegistrationNumber) {
+		this.psiRegistrationNumber = psiRegistrationNumber;
 	}
+
 
 
 	public String getPharmacyName() {
@@ -155,16 +141,19 @@ public class Pharmacy {
 		this.pharmacyPatientList = pharmacyPatientList;
 	}
 
-	
-	
+
 
 	@Override
 	public String toString() {
-		return "Pharmacy [pharmacyEmail=" + pharmacyEmail + ", pharmacyRegNumber=" + pharmacyRegNumber
-				+ ", pharmacyName=" + pharmacyName + ", pharmacyContactNum=" + pharmacyContactNum + ", pharmacyAddress="
-				+ pharmacyAddress + ", pharmacyPatientList=" + pharmacyPatientList + "]";
-	}	
+		return "Pharmacy [pharmacyID=" + pharmacyID + ", pharmacyEmail=" + pharmacyEmail + ", pharmacyPassword="
+				+ pharmacyPassword + ", psiRegistrationNumber=" + psiRegistrationNumber + ", pharmacyName="
+				+ pharmacyName + ", pharmacyContactNum=" + pharmacyContactNum + ", pharmacyAddress=" + pharmacyAddress
+				+ ", pharmacyPatientList=" + pharmacyPatientList + "]";
+	}
+
 	
+	
+
 	
 	
 

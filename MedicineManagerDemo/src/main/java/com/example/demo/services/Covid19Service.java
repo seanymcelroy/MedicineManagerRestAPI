@@ -6,8 +6,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -17,12 +24,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+
 import com.example.demo.model.ProvinceCovid;
 
 @Service
 @EnableScheduling
 public class Covid19Service {
 
+	private final int numberOfDaysReported = (int) ChronoUnit.DAYS.between(LocalDate.parse("2020-01-22"), LocalDate.now()) ;
 	private static String VIRUS_DATA_CONFIRMED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 	private static String VIRUS_DATA_DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
 	private static String VIRUS_DATA_RECOVERED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
@@ -97,13 +106,22 @@ public class Covid19Service {
         
         
         
+        
         //Go through confirmed list
         for (CSVRecord record : recordsConfirmed) {
         	ProvinceCovid singleLocation = new ProvinceCovid();
   	
             singleLocation.setProvince(record.get("Province/State"));
             singleLocation.setCountry(record.get("Country/Region"));
-            singleLocation.setTotalCases7DaysAgo(Integer.parseInt(record.get(record.size() - 8)));
+            //singleLocation.setTotalCases7DaysAgo(Integer.parseInt(record.get(record.size() - 8)));
+            
+            Map<String, Integer> dailyStats = new HashMap<>();
+            for (int i=1; i<numberOfDaysReported; i++) {
+            	DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yy");  
+            	 LocalDate date = LocalDate.now();
+            	 dailyStats.put(date.minusDays(i).format(formatters).toString(), Integer.parseInt(record.get(date.minusDays(i).format(formatters).toString())));
+            }
+            singleLocation.setDailyCases(dailyStats);
             
             
             //get last column. most up to date record unless its blank
@@ -117,9 +135,10 @@ public class Covid19Service {
             }else {
             singleLocation.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
             }
-            singleLocation.setDifferenceInWeek(singleLocation.getLatestTotalCases()-singleLocation.getTotalCases7DaysAgo());
+            //singleLocation.setDifferenceInWeek(singleLocation.getLatestTotalCases()-singleLocation.getTotalCases7DaysAgo());
             
-//            System.out.println(singleLocation.getProvince() + "\t" + singleLocation.getCountry() + "\t" + singleLocation.getLatestTotalCases());
+            //System.out.println(singleLocation.getDailyCases().toString());
+           
             
             allStats.add(singleLocation);
         }
@@ -141,6 +160,14 @@ public class Covid19Service {
             }else {
         	allStats.get(pos).setLatestTotalDeaths(Integer.parseInt(record.get(record.size() - 1)));
             }
+        	
+        	Map<String, Integer> dailyDStats = new HashMap<>();
+            for (int i=1; i<numberOfDaysReported; i++) {
+            	DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yy");  
+            	 LocalDate date = LocalDate.now();
+            	 dailyDStats.put(date.minusDays(i).format(formatters).toString(), Integer.parseInt(record.get(date.minusDays(i).format(formatters).toString())));
+            }
+            allStats.get(pos).setDailyDeathCases(dailyDStats);
         }
  
         
@@ -148,7 +175,7 @@ public class Covid19Service {
         for (CSVRecord record : recordsRecovered) {
         	int pos = findIndexInList(record.get(0), record.get("Country/Region"), allStats);
 //            System.out.println(pos);
-//            System.out.println(record.get("Country/Region"));
+
             
         	//latest record for recoveries
             if(pos == -1){
@@ -164,8 +191,22 @@ public class Covid19Service {
             }else {
         	allStats.get(pos).setLatestTotalRecoveries(Integer.parseInt(record.get(record.size() - 1)));
             }
+        	
+        	Map<String, Integer> dailyRStats = new HashMap<>();
+        	
+            for (int i=1; i<numberOfDaysReported; i++) {
+            	DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yy");  
+            	 LocalDate date = LocalDate.now();
+            	 dailyRStats.put(date.minusDays(i).format(formatters).toString(), Integer.parseInt(record.get(date.minusDays(i).format(formatters).toString())));
+            }
+//            System.out.println(dailyRStats.toString());
+            allStats.get(pos).setDailyRecoveryCases(dailyRStats);
+            //allStats.get(pos).toString();
         }
+        
+        
 
+        
         
  
 
@@ -187,6 +228,8 @@ public class Covid19Service {
 			    
 			}
 	
+	
 
+	
 	
 }

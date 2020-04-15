@@ -1,29 +1,20 @@
 package com.example.demo.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProvinceCovid {
 
 	    private String province;
 	    private String country;
+	    //private int differenceInWeek;
 	    private int latestTotalCases;
-	    private int totalCases7DaysAgo;
-	    private int differenceInWeek;
+	    
+	    private Map<String, Integer> dailyCases = new HashMap<String, Integer>();
+	    private Map<String, Integer> dailyDeathCases = new HashMap<String, Integer>();
+	    private Map<String, Integer> dailyRecoveryCases = new HashMap<String, Integer>();
 
-
-	    public int getDifferenceInWeek() {
-			return differenceInWeek;
-		}
-
-		public void setDifferenceInWeek(int differenceInWeek) {
-			this.differenceInWeek = differenceInWeek;
-		}
-
-		public int getTotalCases7DaysAgo() {
-			return totalCases7DaysAgo;
-		}
-
-		public void setTotalCases7DaysAgo(int totalCases7DaysAgo) {
-			this.totalCases7DaysAgo = totalCases7DaysAgo;
-		}
+		
 
 		private int latestTotalDeaths;
 	    private int latestTotalRecoveries;
@@ -68,15 +59,53 @@ public class ProvinceCovid {
 	    public void setLatestTotalRecoveries(int latestTotalRecoveries) {
 	        this.latestTotalRecoveries = latestTotalRecoveries;
 	    }
+	    
+	    public Map<String, Integer> getDailyCases() {
+			return dailyCases;
+		}
+
+		public void setDailyCases(Map<String, Integer> dailyCases) {
+			this.dailyCases = dailyCases;
+		}
+
+		public Map<String, Integer> getDailyDeathCases() {
+			return dailyDeathCases;
+		}
+
+		public void setDailyDeathCases(Map<String, Integer> dailyDeathCases) {
+			this.dailyDeathCases = dailyDeathCases;
+		}
+
+		
+		
+		public Map<String, Integer> getDailyRecoveryCases() {
+			return dailyRecoveryCases;
+		}
+
+		public void setDailyRecoveryCases(Map<String, Integer> dailyRecoveryCases) {
+			this.dailyRecoveryCases = dailyRecoveryCases;
+		}
 
 		@Override
 		public String toString() {
-			return "LocationCovidStats [province=" + province + ", country=" + country + ", latestTotalCases="
-					+ latestTotalCases + ", latestTotalDeaths=" + latestTotalDeaths + ", latestTotalRecoveries="
-					+ latestTotalRecoveries + "]";
+			return "ProvinceCovid [province=" + province + ", country=" + country + ", latestTotalCases="
+					+ latestTotalCases + ", dailyCases=" + dailyCases + ", dailyDeathCases=" + dailyDeathCases
+					+ ", dailyRecoveryCases=" + dailyRecoveryCases + ", latestTotalDeaths=" + latestTotalDeaths
+					+ ", latestTotalRecoveries=" + latestTotalRecoveries + "]";
 		}
 
 
+
+
 	    
+	    
+
+
+
+
+	    
+		
+		
+		
 	
 }

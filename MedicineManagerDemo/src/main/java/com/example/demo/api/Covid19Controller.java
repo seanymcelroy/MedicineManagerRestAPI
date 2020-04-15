@@ -111,6 +111,12 @@ public class Covid19Controller {
 		//myLis.add(RealMapOMaps);
 		return dailyDataList;
 	}
+	
+	
+	@GetMapping("/late")
+	public List<ProvinceCovid> getIt() {
+		return covid19Service.getAllCovidData();
+	}
 
 	
 

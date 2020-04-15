@@ -13,8 +13,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -228,7 +230,25 @@ public class Covid19Service {
 			    
 			}
 	
-	
+	public void getCountryData(String dateStr) {
+		List<ProvinceCovid> allLocations = getAllCovidData();
+		Set<String> setOfCountries = new HashSet();
+		Set<Map<String, Map<String, Integer>>> acountrySet;
+		
+		
+		
+		for(ProvinceCovid province: allLocations) {
+			if(!setOfCountries.contains(province.getCountry())){
+				setOfCountries.add(province.getCountry());
+			}
+			
+			HashMap<String, Integer> conditionNumber = new HashMap<>();
+			conditionNumber.put("confirmed", province.getConfimedCasesThisDay(dateStr));
+			conditionNumber.put("deaths", province.getDeathsThisDay(dateStr));
+			conditionNumber.put("recovered", province.getRecoveredCasesThisDay(dateStr));
+			
+		}
+	}
 
 	
 	

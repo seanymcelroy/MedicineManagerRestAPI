@@ -1,11 +1,15 @@
 package com.example.demo.model;
 
+import java.util.List;
+import java.util.Map;
+
 public class DailyData {
 	
 	String reportDate;
 	int numberOfGlobalCases;
 	int numberOfGlobalDeaths;
 	int numberOfGlobalRecoveries;
+	List<Map<String, Map<String, Integer>>> countryList;
 	
 	
 
@@ -33,6 +37,14 @@ public class DailyData {
 	public void setReportDate(String reportDate) {
 		this.reportDate = reportDate;
 	}
+	public List<Map<String, Map<String, Integer>>> getCountryList() {
+		return countryList;
+	}
+	public void setCountryList(List<Map<String, Map<String, Integer>>> countryList) {
+		this.countryList = countryList;
+	}
+
+	
 	
 	
 	

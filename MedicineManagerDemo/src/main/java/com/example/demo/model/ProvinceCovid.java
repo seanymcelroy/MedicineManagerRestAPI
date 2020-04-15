@@ -95,7 +95,17 @@ public class ProvinceCovid {
 		}
 
 
-
+		public int getConfimedCasesThisDay(String dateStr) {
+			return dailyCases.get(dateStr);
+		}
+		
+		public int getDeathsThisDay(String dateStr) {
+			return dailyDeathCases.get(dateStr);
+		}
+		
+		public int getRecoveredCasesThisDay(String dateStr) {
+			return dailyRecoveryCases.get(dateStr);
+		}
 
 	    
 	    

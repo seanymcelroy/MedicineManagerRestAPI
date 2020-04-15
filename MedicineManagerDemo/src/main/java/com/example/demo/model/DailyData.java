@@ -9,7 +9,7 @@ public class DailyData {
 	int numberOfGlobalCases;
 	int numberOfGlobalDeaths;
 	int numberOfGlobalRecoveries;
-	List<CountryCovid> countryList;
+	
 	
 	
 
@@ -37,12 +37,7 @@ public class DailyData {
 	public void setReportDate(String reportDate) {
 		this.reportDate = reportDate;
 	}
-	public List<CountryCovid> getCountryList() {
-		return countryList;
-	}
-	public void setCountryList(List<CountryCovid> countryList) {
-		this.countryList = countryList;
-	}
+
 
 	
 

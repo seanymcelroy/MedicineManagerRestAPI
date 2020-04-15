@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +79,15 @@ public class ProvinceCovid {
 			this.dailyDeathCases = dailyDeathCases;
 		}
 
-		
+//
+//		public void fixDateFormat() {
+//			DateTimeFormatter formatForClient = DateTimeFormatter.ofPattern("dd/MM/yy");
+//			
+//			for(int i= 0; i<dailyCases.size(); i++) {
+//				String sDate = dailyCases.remove("oldKey");
+//				Date date1=new SimpleDateFormat("m/d/yy").parse(sDate);
+//			}
+//		}
 		
 		public Map<String, Integer> getDailyRecoveryCases() {
 			return dailyRecoveryCases;

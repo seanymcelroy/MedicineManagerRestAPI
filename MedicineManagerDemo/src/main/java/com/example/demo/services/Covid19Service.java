@@ -119,7 +119,8 @@ public class Covid19Service {
             
             Map<String, Integer> dailyStats = new HashMap<>();
             for (int i=1; i<numberOfDaysReported; i++) {
-            	DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yy");  
+            	DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yy");
+            	
             	 LocalDate date = LocalDate.now();
             	 dailyStats.put(date.minusDays(i).format(formatters).toString(), Integer.parseInt(record.get(date.minusDays(i).format(formatters).toString())));
             }
@@ -252,6 +253,15 @@ public class Covid19Service {
 			for(CountryCovid cc: listOfCountries) {
 				if (province.getCountry().equalsIgnoreCase(cc.getCountryName())) {
 					
+					int oldCases = cc.getCountryTotalCases();
+					int oldDeaths = cc.getCountryTotalDeaths();
+					int oldRecoveries = cc.getCountryTotalRecoveries();
+					
+					cc.setCountryTotalCases(oldCases + province.getLatestTotalCases());
+					cc.setCountryTotalDeaths(oldDeaths + province.getLatestTotalDeaths());
+					cc.setCountryTotalRecoveries(oldRecoveries + province.getLatestTotalRecoveries());
+			
+					
 					province.getDailyCases().forEach(
 						    (key, value) -> cc.getDailyCountryCases().merge( key, value, Integer::sum)
 						);
@@ -272,11 +282,7 @@ public class Covid19Service {
 	
 		
 			
-			
-//			HashMap<String, Integer> caseData = new HashMap<>();
-////			caseData.put("confirmed", province.getConfimedCasesThisDay(dateStr));
-////			caseData.put("deaths", province.getDeathsThisDay(dateStr));
-////			caseData.put("recovered", province.getRecoveredCasesThisDay(dateStr));
+
 			
 		
 	}

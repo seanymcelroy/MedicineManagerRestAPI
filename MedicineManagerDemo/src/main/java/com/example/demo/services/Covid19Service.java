@@ -26,7 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-
+import com.example.demo.model.CountryCovid;
 import com.example.demo.model.ProvinceCovid;
 
 @Service
@@ -230,24 +230,55 @@ public class Covid19Service {
 			    
 			}
 	
-	public void getCountryData(String dateStr) {
-		List<ProvinceCovid> allLocations = getAllCovidData();
+	public List<CountryCovid> getCountryData() {
+		List<ProvinceCovid> allLocations = allStats;
 		Set<String> setOfCountries = new HashSet();
-		Set<Map<String, Map<String, Integer>>> acountrySet;
 		
+		//CountryCovid cc = new CountryCovid();
+		List<CountryCovid> listOfCountries = new ArrayList();
 		
 		
 		for(ProvinceCovid province: allLocations) {
 			if(!setOfCountries.contains(province.getCountry())){
 				setOfCountries.add(province.getCountry());
 			}
-			
-			HashMap<String, Integer> conditionNumber = new HashMap<>();
-			conditionNumber.put("confirmed", province.getConfimedCasesThisDay(dateStr));
-			conditionNumber.put("deaths", province.getDeathsThisDay(dateStr));
-			conditionNumber.put("recovered", province.getRecoveredCasesThisDay(dateStr));
-			
 		}
+		
+		for(String countryName: setOfCountries) {
+			listOfCountries.add(new CountryCovid(countryName));
+		}
+		
+		for(ProvinceCovid province: allLocations) {
+			for(CountryCovid cc: listOfCountries) {
+				if (province.getCountry().equalsIgnoreCase(cc.getCountryName())) {
+					
+					province.getDailyCases().forEach(
+						    (key, value) -> cc.getDailyCountryCases().merge( key, value, Integer::sum)
+						);
+					
+					province.getDailyDeathCases().forEach(
+						    (key, value) -> cc.getDailyCountryDeathCases().merge( key, value, Integer::sum)
+						);
+					
+					province.getDailyRecoveryCases().forEach(
+						    (key, value) -> cc.getDailyCountryRecoveryCases().merge( key, value, Integer::sum)
+						);
+				}
+			}
+		}
+		
+		return listOfCountries;
+		
+	
+		
+			
+			
+//			HashMap<String, Integer> caseData = new HashMap<>();
+////			caseData.put("confirmed", province.getConfimedCasesThisDay(dateStr));
+////			caseData.put("deaths", province.getDeathsThisDay(dateStr));
+////			caseData.put("recovered", province.getRecoveredCasesThisDay(dateStr));
+			
+		
 	}
 
 	

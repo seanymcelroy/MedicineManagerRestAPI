@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.CountryCovid;
 import com.example.demo.model.DailyData;
 import com.example.demo.model.GlobalTotals;
 import com.example.demo.model.ProvinceCovid;
@@ -104,7 +105,7 @@ public class Covid19Controller {
      		dd.setNumberOfGlobalCases(dailyGlobalCases.get(date.minusDays(i).format(formatters)));
      		dd.setNumberOfGlobalDeaths(dailyGlobalDeaths.get(date.minusDays(i).format(formatters)));
      		dd.setNumberOfGlobalRecoveries(dailyGlobalRecoveries.get(date.minusDays(i).format(formatters)));
-        	 
+     		//dd.setCountryList(covid19Service.getCountryData());
      		dailyDataList.add(dd);	
 		}
 		
@@ -113,9 +114,9 @@ public class Covid19Controller {
 	}
 	
 	
-	@GetMapping("/late")
-	public List<ProvinceCovid> getIt() {
-		return covid19Service.getAllCovidData();
+	@GetMapping("/countryDailyStats")
+	public List<CountryCovid> getIt() {
+		return covid19Service.getCountryData();
 	}
 
 	

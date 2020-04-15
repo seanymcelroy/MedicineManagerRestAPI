@@ -9,7 +9,7 @@ public class DailyData {
 	int numberOfGlobalCases;
 	int numberOfGlobalDeaths;
 	int numberOfGlobalRecoveries;
-	List<Map<String, Map<String, Integer>>> countryList;
+	List<CountryCovid> countryList;
 	
 	
 
@@ -37,12 +37,14 @@ public class DailyData {
 	public void setReportDate(String reportDate) {
 		this.reportDate = reportDate;
 	}
-	public List<Map<String, Map<String, Integer>>> getCountryList() {
+	public List<CountryCovid> getCountryList() {
 		return countryList;
 	}
-	public void setCountryList(List<Map<String, Map<String, Integer>>> countryList) {
+	public void setCountryList(List<CountryCovid> countryList) {
 		this.countryList = countryList;
 	}
+
+	
 
 	
 	

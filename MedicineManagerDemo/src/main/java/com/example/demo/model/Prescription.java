@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,9 @@ import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.example.demo.model.user.Patient;
+
 
 @Entity
 public class Prescription {
@@ -35,29 +38,46 @@ public class Prescription {
 	@JoinColumn(name = "patient_id")
 	Patient patientOnPrescription;
 	
-
 	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<LineItem> items;
-	
-	
-
-
 	String instructions;
 	String status; //BeingPrepared + Ready for PickUp + Dispensed
-	
-//	@Temporal(TemporalType.DATE)
-//	Date prescriptionCreationDate;
+		
+	Long prescriptionCreationTime;
 
+	String rxImageURI;
 	
 	//Prescription definetly has a pharmacy
 //	Pharmacy prescriptionFulfillers
 	
 	
-	
+	public Prescription() {
+		super();
+	}
+
+
+	public Prescription(Patient patientOnPrescription, String instructions, Long prescriptionCreationTime,
+			String rxImageURI) {
+		super();
+		this.patientOnPrescription = patientOnPrescription;
+		this.instructions = instructions;
+		this.prescriptionCreationTime = prescriptionCreationTime;
+		this.rxImageURI = rxImageURI;
+	}
+
+
+
+
+
+
+
+
 
 	public int getPrescriptionID() {
 		return prescriptionID;
 	}
+
+
 
 
 	public Set<LineItem> getItems() {
@@ -99,13 +119,34 @@ public class Prescription {
 		this.status = status;
 	}
 
-//	public Date getPrescriptionCreationDate() {
-//		return prescriptionCreationDate;
-//	}
-//
-//	public void setPrescriptionCreationDate(Date prescriptionCreationDate) {
-//		this.prescriptionCreationDate = prescriptionCreationDate;
-//	}
+	public Long getPrescriptionCreationTime() {
+		return prescriptionCreationTime;
+	}
+
+	public void setPrescriptionCreationTime(Long prescriptionCreationTime) {
+		this.prescriptionCreationTime = prescriptionCreationTime;
+	}
+
+	public String getRxImageURI() {
+		return rxImageURI;
+	}
+
+
+	public void setRxImageURI(String rxImageURI) {
+		this.rxImageURI = rxImageURI;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Prescription [prescriptionID=" + prescriptionID + ", patientOnPrescription=" + patientOnPrescription
+				+ ", items=" + items + ", instructions=" + instructions + ", status=" + status
+				+ ", prescriptionCreationTime=" + prescriptionCreationTime + ", rxImageURI=" + rxImageURI + "]";
+	}
+
+	
+	
+
 	
 
 	

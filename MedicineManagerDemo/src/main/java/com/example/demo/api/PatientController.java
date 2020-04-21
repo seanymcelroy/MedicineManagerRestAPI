@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Patient;
+import com.example.demo.model.user.Patient;
 import com.example.demo.services.PatientService;
 
 @RestController
@@ -54,11 +54,11 @@ public class PatientController {
 		
 		//(Patient foundPatient = pService.findPatientByID)
 		//return usersPatients;
-		return pService.findPatientById(patientID, pharmacyID);
+		return pService.findPatientById(patientID);
 	}
-	
-	@PutMapping("/{patientID}")
-	public void updatePatientDetails(@RequestBody Patient p, @PathVariable String pharmacyID) {
-		pService.updatePatient(p, pharmacyID);
-	}
+//	
+//	@PutMapping("/{patientID}")
+//	public void updatePatientDetails(@RequestBody Patient p, @PathVariable String pharmacyID) {
+//		pService.updatePatient(p, pharmacyID);
+//	}
 }

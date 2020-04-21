@@ -26,8 +26,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.CountryCovid;
-import com.example.demo.model.ProvinceCovid;
+import com.example.demo.model.covidModels.CountryCovid;
+import com.example.demo.model.covidModels.ProvinceCovid;
 
 @Service
 @EnableScheduling

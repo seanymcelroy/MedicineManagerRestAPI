@@ -1,9 +1,10 @@
-package com.example.demo.model;
+package com.example.demo.model.user;
 
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,22 +15,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
-//@Entity
+@Entity
 public class Pharmacy {
 
-	//Persistence Provider must assign primary key Identity using column.
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int pharmacyID;
-	
-	
+	@Id
 	private String pharmacyEmail;
 	
 	private String pharmacyPassword;
 	
+	@Column(unique=true)
 	private String psiRegistrationNumber;
 	
-	
+	@Column(unique=true)
 	private String pharmacyName;
 	
 	
@@ -37,43 +34,18 @@ public class Pharmacy {
 	private String pharmacyAddress;
 
 	
-	@OneToMany(mappedBy = "patientPharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Patient> pharmacyPatientList;
-	
-	
-//	@ManyToMany
-//	private List<Medicine> medicineStock;
-	
+//	@OneToMany(mappedBy = "patientPharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private Set<Patient> pharmacyPatientList;
 
-
-	
 
 	public String getPharmacyEmail() {
 		return pharmacyEmail;
 	}
 
-	
-
-	public int getPharmacyID() {
-		return pharmacyID;
-	}
-
-
-
-	//Empty Constructor
-	public Pharmacy() {}
-
-
-
-
-
 
 	public void setPharmacyEmail(String pharmacyEmail) {
 		this.pharmacyEmail = pharmacyEmail;
 	}
-	
-	
-	
 
 
 	public String getPharmacyPassword() {
@@ -81,13 +53,9 @@ public class Pharmacy {
 	}
 
 
-
 	public void setPharmacyPassword(String pharmacyPassword) {
 		this.pharmacyPassword = pharmacyPassword;
 	}
-
-
-
 
 
 	public String getPsiRegistrationNumber() {
@@ -95,11 +63,9 @@ public class Pharmacy {
 	}
 
 
-
 	public void setPsiRegistrationNumber(String psiRegistrationNumber) {
 		this.psiRegistrationNumber = psiRegistrationNumber;
 	}
-
 
 
 	public String getPharmacyName() {
@@ -132,24 +98,11 @@ public class Pharmacy {
 	}
 
 
-	public Set<Patient> getPharmacyPatientList() {
-		return pharmacyPatientList;
-	}
 
-
-	public void setPharmacyPatientList(Set<Patient> pharmacyPatientList) {
-		this.pharmacyPatientList = pharmacyPatientList;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Pharmacy [pharmacyID=" + pharmacyID + ", pharmacyEmail=" + pharmacyEmail + ", pharmacyPassword="
-				+ pharmacyPassword + ", psiRegistrationNumber=" + psiRegistrationNumber + ", pharmacyName="
-				+ pharmacyName + ", pharmacyContactNum=" + pharmacyContactNum + ", pharmacyAddress=" + pharmacyAddress
-				+ ", pharmacyPatientList=" + pharmacyPatientList + "]";
-	}
+	
+//	@ManyToMany
+//	private List<Medicine> medicineStock;
+	
 
 	
 	

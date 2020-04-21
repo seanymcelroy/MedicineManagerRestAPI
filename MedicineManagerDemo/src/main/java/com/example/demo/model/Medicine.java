@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.example.demo.model.user.UserPharmacy;
+
 
 //This classes fields should be populated by IPU product file csv.
 

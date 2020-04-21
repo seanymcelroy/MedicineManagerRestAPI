@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.covidModels;
 
 import java.util.List;
 import java.util.Map;

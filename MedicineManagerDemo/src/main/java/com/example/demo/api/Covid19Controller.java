@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.CountryCovid;
-import com.example.demo.model.DailyData;
-import com.example.demo.model.GlobalTotals;
-import com.example.demo.model.ProvinceCovid;
+import com.example.demo.model.covidModels.CountryCovid;
+import com.example.demo.model.covidModels.DailyData;
+import com.example.demo.model.covidModels.GlobalTotals;
+import com.example.demo.model.covidModels.ProvinceCovid;
 import com.example.demo.services.Covid19Service;
 
 @RestController

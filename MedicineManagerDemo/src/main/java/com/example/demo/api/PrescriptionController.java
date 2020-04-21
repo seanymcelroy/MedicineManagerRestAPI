@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dal.PrescriptionRepository;
 import com.example.demo.model.Medicine;
-import com.example.demo.model.Patient;
 import com.example.demo.model.Prescription;
+import com.example.demo.model.user.Patient;
 import com.example.demo.services.MedicineService;
 import com.example.demo.services.PatientService;
 import com.example.demo.services.PrescriptionService;

@@ -26,127 +26,141 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 
 import com.example.demo.model.user.Patient;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="prescriptionID", scope = Integer.class)
 public class Prescription {
 	
 	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
 	int prescriptionID;
+	String patientMessage;
+	String prescriptionStatus= "Submitted";
+	Long prescriptionCreationDate = new Date().getTime();
+	Long prescriptionFulfilmentDate;
+	String prescriptionImageURI;
+	String doctor;
 	
-	@ManyToOne(fetch =FetchType.EAGER)
-	@JoinColumn(name = "patient_id")
-	Patient patientOnPrescription;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	private Set<LineItem> items;
-	String instructions;
-	String status; //BeingPrepared + Ready for PickUp + Dispensed
-		
-	Long prescriptionCreationTime;
+	//Patient
 
-	String rxImageURI;
+//	@JsonIgnore
+	@JsonIdentityReference(alwaysAsId = true)
+	@ManyToOne(fetch =FetchType.LAZY)
+	@JoinColumn(name = "patient_id")
+	Patient prescriptionPatient;
+		
+	//Patient Setter Method only and get Patient ID
+	public void setPrescriptionPatient(Patient prescriptionPatient) {
+		this.prescriptionPatient = prescriptionPatient;
+	}
 	
-	//Prescription definetly has a pharmacy
-//	Pharmacy prescriptionFulfillers
+//	public int getPatientId() {
+//	   return prescriptionPatient.getPatientID();
+//	}
+	
+//	@JsonBackReference
+	public Patient getPrescriptionPatient() {
+		return prescriptionPatient;
+	}
 	
 	
+	
+	
+	//PharmacyOnPrescription
+	
+	
+	//List of PrescriptionLineItems
+	
+	
+	//Constructors
+	
+
+
+
+
 	public Prescription() {
 		super();
 	}
+	
 
 
-	public Prescription(Patient patientOnPrescription, String instructions, Long prescriptionCreationTime,
-			String rxImageURI) {
+	public Prescription(int prescriptionID, String patientMessage, String prescriptionStatus,
+			Long prescriptionCreationDate, Long prescriptionFulfilmentDate, String prescriptionImageURI,
+			String doctor) {
 		super();
-		this.patientOnPrescription = patientOnPrescription;
-		this.instructions = instructions;
-		this.prescriptionCreationTime = prescriptionCreationTime;
-		this.rxImageURI = rxImageURI;
+		this.prescriptionID = prescriptionID;
+		this.patientMessage = patientMessage;
+		this.prescriptionStatus = "Submitted";
+		this.prescriptionCreationDate = new Date().getTime();
+		this.prescriptionFulfilmentDate = prescriptionFulfilmentDate;
+		this.prescriptionImageURI = prescriptionImageURI;
+		this.doctor = doctor;
 	}
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	//Getters + Setters
+	
+	
 	public int getPrescriptionID() {
 		return prescriptionID;
 	}
-
-
-
-
-	public Set<LineItem> getItems() {
-		return items;
-	}
-
-
-
-	public void setItems(Set<LineItem> items) {
-		this.items = items;
-	}
-
-
 	public void setPrescriptionID(int prescriptionID) {
 		this.prescriptionID = prescriptionID;
 	}
-
-	public Patient getPatientOnPrescription() {
-		return patientOnPrescription;
+	public String getPatientMessage() {
+		return patientMessage;
 	}
-
-	public void setPatientOnPrescription(Patient patientOnPrescription) {
-		this.patientOnPrescription = patientOnPrescription;
+	public void setPatientMessage(String patientMessage) {
+		this.patientMessage = patientMessage;
 	}
-
-	public String getInstructions() {
-		return instructions;
+	public String getPrescriptionStatus() {
+		return prescriptionStatus;
 	}
-
-	public void setInstructions(String instructions) {
-		this.instructions = instructions;
+	public void setPrescriptionStatus(String prescriptionStatus) {
+		this.prescriptionStatus = prescriptionStatus;
 	}
-
-	public String getStatus() {
-		return status;
+	public Long getPrescriptionCreationDate() {
+		return prescriptionCreationDate;
 	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPrescriptionCreationDate(Long prescriptionCreationDate) {
+		this.prescriptionCreationDate = prescriptionCreationDate;
 	}
-
-	public Long getPrescriptionCreationTime() {
-		return prescriptionCreationTime;
+	public Long getPrescriptionFulfilmentDate() {
+		return prescriptionFulfilmentDate;
 	}
-
-	public void setPrescriptionCreationTime(Long prescriptionCreationTime) {
-		this.prescriptionCreationTime = prescriptionCreationTime;
+	public void setPrescriptionFulfilmentDate(Long prescriptionFulfilmentDate) {
+		this.prescriptionFulfilmentDate = prescriptionFulfilmentDate;
 	}
-
-	public String getRxImageURI() {
-		return rxImageURI;
+	public String getPrescriptionImageURI() {
+		return prescriptionImageURI;
 	}
-
-
-	public void setRxImageURI(String rxImageURI) {
-		this.rxImageURI = rxImageURI;
+	public void setPrescriptionImageURI(String prescriptionImageURI) {
+		this.prescriptionImageURI = prescriptionImageURI;
 	}
-
-
-	@Override
-	public String toString() {
-		return "Prescription [prescriptionID=" + prescriptionID + ", patientOnPrescription=" + patientOnPrescription
-				+ ", items=" + items + ", instructions=" + instructions + ", status=" + status
-				+ ", prescriptionCreationTime=" + prescriptionCreationTime + ", rxImageURI=" + rxImageURI + "]";
+	public String getDoctor() {
+		return doctor;
 	}
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
+	
+
+	
 
 	
 	
-
+	
 	
 
 	

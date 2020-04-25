@@ -94,11 +94,11 @@ public class Prescription {
 	//PrescriptionLineItems
 	@OneToMany(mappedBy = "prescriptionLineItemPrescription", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIdentityReference(alwaysAsId = true)
-	List<PrescriptionLineItem> prescriptionLineItems = new ArrayList<>();
+	List<PrescriptionLineItem> prescriptionLineItems = new ArrayList<PrescriptionLineItem>();
 	
 	
 	//Line item Helper method. Set line items from prescription from here only
-	public void addPrescription(PrescriptionLineItem prescriptionLineItem) {
+	public void addPrescriptionLineItem(PrescriptionLineItem prescriptionLineItem) {
 		this.prescriptionLineItems.add(prescriptionLineItem);
 		prescriptionLineItem.setPrescriptionLineItemPrescription(this);
 	}

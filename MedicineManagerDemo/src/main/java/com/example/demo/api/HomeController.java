@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dal.MedicineItemRepository;
 import com.example.demo.dal.PatientRepository;
 import com.example.demo.dal.PharmacyRepository;
 import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.dal.PrescriptionRepository;
+import com.example.demo.model.MedicineItem;
 import com.example.demo.model.Prescription;
 import com.example.demo.model.PrescriptionLineItem;
 import com.example.demo.model.user.Patient;
@@ -42,6 +44,10 @@ public class HomeController {
 	
 	@Autowired
 	PrescriptionLineItemRepository mPrescriptionLineItemRepo;
+	
+	
+	@Autowired
+	MedicineItemRepository mMedicineItemRepo;
 	
 	
 	@GetMapping("/test")
@@ -113,11 +119,40 @@ public class HomeController {
 		return mPrescriptionRepo.findPrescriptionsByPrescriptionPharmacyPharmacyID(1);
 	}
 	
-//	@GetMapping("/prescriptionLineItems")
-//	public List<PrescriptionLineItem> getPrescriptionLineItems(){
-////		Prescription p = mPrescriptionRepo.findById(1);
-//		//return mPrescriptionLineItemRepo.findPrescriptionLineItemsByPrescriptionPrescriptionID(1);
-//	}
+	//Line Item test get
+	@GetMapping("/prescriptionLineItems")
+	public List<PrescriptionLineItem> getaPrescriptionLineItems(){
+		//Prescription p = mPrescriptionRepo.findById(1).get();
+		//return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescription(p);
+		
+		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(1);
+	}
+	
+	
+	//Line Item test get
+	@GetMapping("/prescriptionLineItemsMed")
+	public List<PrescriptionLineItem> getaPrescriptionLineItemsByMedicine(){
+		//Prescription p = mPrescriptionRepo.findById(1).get();
+		//return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescription(p);
+		
+		return mPrescriptionLineItemRepo.findAllByLineItemMedicineMedicineItemID(2);
+	}
+	
+	
+	//Line Item test post
+	@PostMapping("/updatePrescription")
+	public void addaPrescriptionLineItems(){
+		//Probably be in body of prescription
+		Prescription p = mPrescriptionRepo.getOne(1);
+		PrescriptionLineItem prescritionLineItem= new PrescriptionLineItem(8, "Before bed");
+		MedicineItem medicineItem = mMedicineItemRepo.getOne(2);
+		
+		prescritionLineItem.setLineItemMedicine(medicineItem);
+		
+		p.addPrescriptionLineItem(prescritionLineItem);
+		
+		mPrescriptionRepo.save(p);
+	}
 
 
 	
@@ -133,5 +168,26 @@ public class HomeController {
 		}
 		
 	}
+	
+	
+	
+	
+	///////////Medicine
+	
+	
+	//New medicine 
+	@PostMapping("/newMedicineItemList")
+	public void createMedicineList(@RequestBody List<MedicineItem> medicineItems){
+		
+		mMedicineItemRepo.saveAll(medicineItems);
+	}
+	
+	@GetMapping("/medicineItemList")
+	public List<MedicineItem> getMedicineItemList() {
+		return mMedicineItemRepo.findAll();
+	}
+	
+	
+	//Return prescriptionLine
 	
 }

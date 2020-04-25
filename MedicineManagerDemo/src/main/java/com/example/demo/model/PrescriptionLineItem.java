@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class PrescriptionLineItem{
 	
 	//Prescription
 	@JsonIdentityReference(alwaysAsId = true)
-	@ManyToOne(fetch =FetchType.LAZY)
+	@ManyToOne(fetch =FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
 	@JoinColumn(name = "prescription_id")
 	Prescription prescriptionLineItemPrescription;
 
@@ -41,24 +42,41 @@ public class PrescriptionLineItem{
 	}
 
 	
+	//MedicineItem
+	
+	@ManyToOne(fetch =FetchType.LAZY)
+	@JoinColumn(name ="Medicine_Item_ID")
+	@JsonIdentityReference(alwaysAsId = true)
+	MedicineItem lineItemMedicine;
+	
+
+	public MedicineItem getLineItemMedicine() {
+		return lineItemMedicine;
+	}
+
+
+	public void setLineItemMedicine(MedicineItem lineItemMedicine) {
+		this.lineItemMedicine = lineItemMedicine;
+	}
+	
+	
+	
 	
 	//Constructors
+
+
 
 
 	public PrescriptionLineItem() {
 		super();
 	}
 
-
-	public PrescriptionLineItem(int prescriptionLineItemID, int prescriptionLineItemQty,
-			String prescriptionLineItemInstructions, Prescription prescriptionLineItemPrescription) {
+	public PrescriptionLineItem(int prescriptionLineItemQty,
+			String prescriptionLineItemInstructions) {
 		super();
-		this.prescriptionLineItemID = prescriptionLineItemID;
 		this.prescriptionLineItemQty = prescriptionLineItemQty;
 		this.prescriptionLineItemInstructions = prescriptionLineItemInstructions;
-		this.prescriptionLineItemPrescription = prescriptionLineItemPrescription;
 	}
-
 
 	public int getPrescriptionLineItemID() {
 		return prescriptionLineItemID;

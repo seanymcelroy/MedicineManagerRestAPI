@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 
 import com.example.demo.model.user.Patient;
+import com.example.demo.model.user.Pharmacy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -57,34 +59,66 @@ public class Prescription {
 	@JoinColumn(name = "patient_id")
 	Patient prescriptionPatient;
 		
-	//Patient Setter Method only and get Patient ID
 	public void setPrescriptionPatient(Patient prescriptionPatient) {
 		this.prescriptionPatient = prescriptionPatient;
 	}
 	
-//	public int getPatientId() {
-//	   return prescriptionPatient.getPatientID();
-//	}
-	
+
 //	@JsonBackReference
 	public Patient getPrescriptionPatient() {
 		return prescriptionPatient;
 	}
 	
+	///////////////////
 	
 	
 	
 	//PharmacyOnPrescription
+	@JsonIdentityReference(alwaysAsId = true)
+	@ManyToOne(fetch =FetchType.LAZY)
+	@JoinColumn(name = "pharmacy_id")
+	Pharmacy prescriptionPharmacy;
+	
+	public Pharmacy getPrescriptionPharmacy() {
+		return prescriptionPharmacy;
+	}
+
+	public void setPrescriptionPharmacy(Pharmacy prescriptionPharmacy) {
+		this.prescriptionPharmacy = prescriptionPharmacy;
+	}
+	
+	///////////
 	
 	
-	//List of PrescriptionLineItems
 	
+	//PrescriptionLineItems
+	@OneToMany(mappedBy = "prescriptionLineItemPrescription", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIdentityReference(alwaysAsId = true)
+	List<PrescriptionLineItem> prescriptionLineItems = new ArrayList<>();
+	
+	
+	//Line item Helper method. Set line items from prescription from here only
+	public void addPrescription(PrescriptionLineItem prescriptionLineItem) {
+		this.prescriptionLineItems.add(prescriptionLineItem);
+		prescriptionLineItem.setPrescriptionLineItemPrescription(this);
+	}
+	
+	//Getters + setters
+	public List<PrescriptionLineItem> getPrescriptionLineItems() {
+		return prescriptionLineItems;
+	}
+
+	public void setPrescriptionLineItems(List<PrescriptionLineItem> prescriptionLineItems) {
+		this.prescriptionLineItems = prescriptionLineItems;
+	}
+	
+	
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////
 	
 	//Constructors
 	
-
-
-
 
 	public Prescription() {
 		super();

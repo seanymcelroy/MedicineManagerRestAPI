@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dal.PatientRepository;
+import com.example.demo.dal.PharmacyRepository;
+import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.dal.PrescriptionRepository;
 import com.example.demo.model.Prescription;
+import com.example.demo.model.PrescriptionLineItem;
 import com.example.demo.model.user.Patient;
+import com.example.demo.model.user.Pharmacy;
 
 //Rest controller indicates data returned by each method will be written straight into response body. no template rendered
 //CrossOrigin allows resource sharing to other servers
@@ -33,44 +37,18 @@ public class HomeController {
 	@Autowired
 	PrescriptionRepository mPrescriptionRepo;
 	
+	@Autowired
+	PharmacyRepository mPharmacyRepo;
+	
+	@Autowired
+	PrescriptionLineItemRepository mPrescriptionLineItemRepo;
+	
+	
 	@GetMapping("/test")
 	public String testEndpoint(){
 		return "Test endpoint in Home Controller reached. (permit all)";
 	}
 
-
-//	@Autowired
-//	PharmacyService pharmacyService;
-//
-//	
-//	@Autowired
-//	PatientService mPatientService;
-//	
-//	
-//	@PostMapping("/newPharm")
-//	public String createNewPharmacy(@RequestBody Pharmacy pharmacyNue) {
-//		if (pharmacyService.createNewPharmacyUser(pharmacyNue)==true) {
-//			return "Pharmacy Created";
-//		}
-//		else {
-//			return "Pharmacy with same email or same name or same psiNumber exists";
-//		}
-//		
-//	}
-//	
-//	
-	
-	
-//	@PostMapping("/newPatient")
-//	public String createNewPatient(@RequestBody Patient patient) {
-//		if (mPatientService.createNewPatientUser(patient)==true) {
-//			return "Patient Created";
-//		}
-//		else {
-//			return "Patient with same email or same name phone Number exists";
-//		}
-//		
-//	}
 	
 	@PostMapping("/newPatient")
 	public String createNewPatient(@RequestBody Patient patient) {
@@ -84,12 +62,17 @@ public class HomeController {
 		
 	}
 	
-	@PostMapping("/newPrescription")
-	public void createNewPrescription(@RequestBody Prescription prescription) {
+	@PostMapping("/newPrescription/{pharmacyName}")
+	public void createNewPrescription(@RequestBody Prescription prescription, @PathVariable("pharmacyName") String pharmacyName) {
 		
+		//Will be replace with Principal when Security added
 		Patient patient = mPatientRepo.findById(1).get();
-		patient.addPrescription(prescription);
 		
+		Pharmacy pharmacy = mPharmacyRepo.findByPharmacyName(pharmacyName);
+		
+		
+		prescription.setPrescriptionPharmacy(pharmacy);
+		patient.addPrescription(prescription);
 		mPatientRepo.save(patient);
 		
 	}
@@ -103,6 +86,14 @@ public class HomeController {
 		
 	}
 	
+	@GetMapping("/pharmacy")
+	public Pharmacy getPharmacy() {
+		
+		Pharmacy pharmacy = mPharmacyRepo.findById(1).get();
+		return pharmacy;
+		
+	}
+	
 	
 	@GetMapping("/prescription")
 	public Prescription getPrescription() {
@@ -112,9 +103,35 @@ public class HomeController {
 		
 	}
 	
-	@GetMapping("/patientprescription")
+	@GetMapping("/patientPrescriptions")
 	public List<Prescription> getPatientPrescriptions() {
-		return mPrescriptionRepo.findPrescriptionsByPrescriptionPatientPatientID(1);
+		return mPrescriptionRepo.findPrescriptionsByPrescriptionPatientPatientID(2);
 	}
+	
+	@GetMapping("/pharmacyPrescriptions")
+	public List<Prescription> getPharmacyPrescriptions(){
+		return mPrescriptionRepo.findPrescriptionsByPrescriptionPharmacyPharmacyID(1);
+	}
+	
+//	@GetMapping("/prescriptionLineItems")
+//	public List<PrescriptionLineItem> getPrescriptionLineItems(){
+////		Prescription p = mPrescriptionRepo.findById(1);
+//		//return mPrescriptionLineItemRepo.findPrescriptionLineItemsByPrescriptionPrescriptionID(1);
+//	}
 
+
+	
+	
+	@PostMapping("/newPharmacy")
+	public String createNewPharmacy(@RequestBody Pharmacy pharmacy) {
+		if (mPharmacyRepo.existsPharmacyByPharmacyName(pharmacy.getPharmacyName())==false && mPharmacyRepo.existsPharmacyByPharmacyEmail(pharmacy.getPharmacyEmail())==false)  {
+			mPharmacyRepo.save(pharmacy);
+			return "Pharmacy Created";
+		}
+		else {
+			return "Pharmacy with same email or same name";
+		}
+		
+	}
+	
 }

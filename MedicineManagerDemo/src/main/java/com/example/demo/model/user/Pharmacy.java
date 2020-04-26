@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.Prescription;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -61,8 +62,23 @@ public class Pharmacy {
 	
 	
 	////
+	@OneToMany(mappedBy = "itemStockPharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
+	List<ItemStockLevel> itemStockLevels = new ArrayList<ItemStockLevel>();
+		
+	public List<ItemStockLevel> getItemStockLevel() {
+		return itemStockLevels;
+	}
+	
+	public void addItemToStock(ItemStockLevel item) {
+		this.itemStockLevels.add(item);
+		item.setItemStockPharmacy(this);
+	}
 
+//	public void setItemStockLevel(List<ItemStockLevel> itemStockLevel) {
+//		this.itemStockLevel = itemStockLevel;
+//	}
 
+	////////
 	public Pharmacy() {
 		super();
 	}

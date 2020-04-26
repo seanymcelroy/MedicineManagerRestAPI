@@ -44,9 +44,9 @@ public class PrescriptionLineItem{
 	
 	//MedicineItem
 	
-	@ManyToOne(fetch =FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.DETACH})
 	@JoinColumn(name ="Medicine_Item_ID")
-	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonIdentityReference(alwaysAsId = true)
 	MedicineItem lineItemMedicine;
 	
 

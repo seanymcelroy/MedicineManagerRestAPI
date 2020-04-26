@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dal.ItemStockLevelRepository;
 import com.example.demo.dal.MedicineItemRepository;
 import com.example.demo.dal.PatientRepository;
 import com.example.demo.dal.PharmacyRepository;
 import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.dal.PrescriptionRepository;
+import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.MedicineItem;
 import com.example.demo.model.Prescription;
 import com.example.demo.model.PrescriptionLineItem;
@@ -48,6 +50,10 @@ public class HomeController {
 	
 	@Autowired
 	MedicineItemRepository mMedicineItemRepo;
+	
+	
+	@Autowired
+	ItemStockLevelRepository mItemStockLevelRepo;
 	
 	
 	@GetMapping("/test")
@@ -135,6 +141,7 @@ public class HomeController {
 		//Prescription p = mPrescriptionRepo.findById(1).get();
 		//return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescription(p);
 		
+		//MedicineItem medItem = mMedicineItemRepo.getOne(2);
 		return mPrescriptionLineItemRepo.findAllByLineItemMedicineMedicineItemID(2);
 	}
 	
@@ -160,6 +167,12 @@ public class HomeController {
 	@PostMapping("/newPharmacy")
 	public String createNewPharmacy(@RequestBody Pharmacy pharmacy) {
 		if (mPharmacyRepo.existsPharmacyByPharmacyName(pharmacy.getPharmacyName())==false && mPharmacyRepo.existsPharmacyByPharmacyEmail(pharmacy.getPharmacyEmail())==false)  {
+					
+			for(MedicineItem medItem: mMedicineItemRepo.findAll()) {
+				ItemStockLevel itemStock = new ItemStockLevel(0, medItem);
+				pharmacy.addItemToStock(itemStock);
+			}
+						
 			mPharmacyRepo.save(pharmacy);
 			return "Pharmacy Created";
 		}
@@ -168,7 +181,7 @@ public class HomeController {
 		}
 		
 	}
-	
+//	
 	
 	
 	
@@ -188,6 +201,12 @@ public class HomeController {
 	}
 	
 	
-	//Return prescriptionLine
+	//Return Item stock levels
+	
+	@GetMapping("getPharmacyStockItems")
+	public List<ItemStockLevel> getItemStockLevelsForPharmacy() {
+		Pharmacy p = mPharmacyRepo.getOne(1);
+		return mItemStockLevelRepo.findAllByItemStockPharmacy(p);
+	}
 	
 }

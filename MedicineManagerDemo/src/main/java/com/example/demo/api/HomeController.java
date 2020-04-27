@@ -125,15 +125,7 @@ public class HomeController {
 		return mPrescriptionRepo.findPrescriptionsByPrescriptionPharmacyPharmacyID(1);
 	}
 	
-	//Line Item test get
-	@GetMapping("/prescriptionLineItems")
-	public List<PrescriptionLineItem> getaPrescriptionLineItems(){
-		//Prescription p = mPrescriptionRepo.findById(1).get();
-		//return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescription(p);
-		
-		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(1);
-	}
-	
+
 	
 	//Line Item test get
 	@GetMapping("/prescriptionLineItemsMed")
@@ -195,18 +187,84 @@ public class HomeController {
 		mMedicineItemRepo.saveAll(medicineItems);
 	}
 	
+	//
+	
 	@GetMapping("/medicineItemList")
 	public List<MedicineItem> getMedicineItemList() {
 		return mMedicineItemRepo.findAll();
 	}
 	
 	
+
+	
+	
+	
+	
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////////////
+	
+	
+	@PostMapping("/updatePharmacyStockItems")
+	public List<ItemStockLevel> updateStock(@RequestBody List<ItemStockLevel> itemStockLevels){
+		
+		Pharmacy p = mPharmacyRepo.getOne(1);
+//		for(ItemStockLevel itemStock : itemStockLevels) {
+//			ItemStockLevel itemStockFoundById = mItemStockLevelRepo.getOne(itemStock.getItemStockLevelID());
+//			int oldQuantity = itemStockFoundById.getQuantity();
+//			itemStockFoundById.setQuantity(oldQuantity+ 2);
+//		}
+		
+		for(ItemStockLevel itemStock : itemStockLevels) {
+			p.addItemToStock(itemStock);
+		}
+		
+		mPharmacyRepo.save(p);
+		return itemStockLevels;
+		
+	}
+	
+	
+	
+	
+	//Load of getters
+	
+	@GetMapping("/getMedItemById")
+	public MedicineItem getMedicineItemById() {
+		return mMedicineItemRepo.getOne(1);
+		
+	}
+	
+	@GetMapping("/getPrescriptionLineItemById")
+	public PrescriptionLineItem getPrescriptionLineItem() {
+		return mPrescriptionLineItemRepo.getOne(1);
+	}
+	
+	@GetMapping("/stockLevelItemByID")
+	public ItemStockLevel getStockLevelItemByID() {
+		return mItemStockLevelRepo.getOne(1);
+	}
+	
+	
 	//Return Item stock levels
 	
-	@GetMapping("getPharmacyStockItems")
+	@GetMapping("/getPharmacyStockItems")
 	public List<ItemStockLevel> getItemStockLevelsForPharmacy() {
 		Pharmacy p = mPharmacyRepo.getOne(1);
 		return mItemStockLevelRepo.findAllByItemStockPharmacy(p);
 	}
+	
+	
+	
+	//Line Item test get
+	@GetMapping("/prescriptionLineItems")
+	public List<PrescriptionLineItem> getaPrescriptionLineItems(){
+		//Prescription p = mPrescriptionRepo.findById(1).get();
+		//return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescription(p);
+		
+		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(1);
+	}
+	
 	
 }

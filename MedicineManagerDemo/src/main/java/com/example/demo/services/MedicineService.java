@@ -1,43 +1,61 @@
-//package com.example.demo.services;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import com.example.demo.dal.MedicineRepository;
-//import com.example.demo.model.Medicine;
-//
-//@Service
-//public class MedicineService {
-//
-//	//private List<Medicine> medicineAvailable = new ArrayList();
-//	@Autowired
-//	MedicineRepository medRepo;
-//	
-//	//Might remove curent medicines in list then compare to current list
-//	public void saveListOfMedicine(List<Medicine> medList) {
-//		for(Medicine m: medList) {
-//			medRepo.save(m);
-//		}
-//	}
-//		
-//	public List<Medicine> getMedicines(){
-//		return medRepo.findAll();
-//	}
-//	
-//	public Medicine getMedicineByID(String medID){
-//		Optional<Medicine> medFoundByID = medRepo.findById(medID);
-//		 if (medFoundByID.equals(null)){
-//			 return null;
-//		 }
-//		 
-//		 else {
-//			 return medFoundByID.get();
-//		 }
-//	}
-//	
-//	
-//}
+package com.example.demo.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dal.MedicineItemRepository;
+import com.example.demo.dal.PharmacyRepository;
+import com.example.demo.model.ItemStockLevel;
+import com.example.demo.model.MedicineItem;
+import com.example.demo.model.user.Pharmacy;
+
+@Service
+public class MedicineService {
+	
+	@Autowired
+	MedicineItemRepository mMedItemRepo;
+	
+	@Autowired
+	PharmacyRepository mPharmacyRepo;
+	
+	public List<MedicineItem> updateMedicineList(List<MedicineItem> newMedList){
+		
+		List<MedicineItem> currentMedItemList = mMedItemRepo.findAll();
+		
+		List<Pharmacy> allPharmacies = mPharmacyRepo.findAll();
+
+		
+		for(MedicineItem medItem : currentMedItemList) {
+			if(newMedList.contains(medItem)) {
+				continue;
+			}
+			medItem.setMedicineStatus("End Of Life");
+		}
+		
+		for(MedicineItem newmedItem : newMedList) {
+			if(currentMedItemList.contains(newmedItem)) {
+				continue;
+			}
+			
+			for(Pharmacy pharmacyX : allPharmacies) {
+			newmedItem.addItemStockMed(new ItemStockLevel(pharmacyX));
+			}
+			currentMedItemList.add(newmedItem);
+		}
+		
+
+		mMedItemRepo.saveAll(currentMedItemList);
+		
+		return newMedList;
+	}
+
+	public List<MedicineItem> fetchAllMedItemList() {
+		return mMedItemRepo.findAll();
+		// TODO Auto-generated method stub
+		
+	}
+
+}

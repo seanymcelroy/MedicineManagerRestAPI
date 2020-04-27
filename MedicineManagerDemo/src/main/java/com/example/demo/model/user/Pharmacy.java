@@ -20,6 +20,7 @@ import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.Prescription;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -59,12 +60,14 @@ public class Pharmacy {
 		this.pharmacyPrescriptions = pharmacyPrescriptions;
 	}
 	
+//	////////////////////////////
 	
-	
-	////
+//	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIgnore
 	@OneToMany(mappedBy = "itemStockPharmacy", cascade = CascadeType.ALL, orphanRemoval = true)
 	List<ItemStockLevel> itemStockLevels = new ArrayList<ItemStockLevel>();
-		
+	
+	@JsonIdentityReference(alwaysAsId = true)
 	public List<ItemStockLevel> getItemStockLevel() {
 		return itemStockLevels;
 	}
@@ -74,8 +77,8 @@ public class Pharmacy {
 		item.setItemStockPharmacy(this);
 	}
 
-//	public void setItemStockLevel(List<ItemStockLevel> itemStockLevel) {
-//		this.itemStockLevel = itemStockLevel;
+//	public void setItemStockLevel(List<ItemStockLevel> itemStockLevels) {
+//		this.itemStockLevels = itemStockLevels;
 //	}
 
 	////////

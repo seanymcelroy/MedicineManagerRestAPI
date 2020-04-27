@@ -11,10 +11,12 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="prescriptionLineItemID", scope = Integer.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PrescriptionLineItem{
 	
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)

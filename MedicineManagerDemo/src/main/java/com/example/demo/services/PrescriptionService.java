@@ -1,51 +1,24 @@
-//package com.example.demo.services;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import com.example.demo.dal.PrescriptionRepository;
-//import com.example.demo.model.Prescription;
-//
-//@Service
-//public class PrescriptionService {
-//
-//	
-//		
-//		@Autowired
-//		private PrescriptionRepository prescriptionRepo;
-//		
-//		
-//		public boolean addNewPrescription(Prescription p) {
-//			
-//			if(prescriptionRepo.save(p) != null) {
-//				return true;
-//			}
-//			return false;
-//		}
-//		
-//		//TEst
-//		public List<Prescription> getAllPrescriptions(){
-//			return prescriptionRepo.findAll();
-//			
-//		}
-//		
-//	
-//		//Must be changed for specific pharmacy
-//		public List<Prescription> getPharmacyPrescriptions(String pharmacyID){
-//			return prescriptionRepo.findAll();
-//			
-//		}
-//		
-//		//Must be changed for specific patient
-//		public List<Prescription> getPatientPrescriptions(String patientID){
-//			return prescriptionRepo.findAll();
-//			
-//		}
-//		
-//		public Optional<Prescription> getPrescriptionByID(String pharmacyID, String prescriptionID) {
-//			return prescriptionRepo.findById(Integer.parseInt(prescriptionID));
-//		}
-//}
+package com.example.demo.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dal.PrescriptionLineItemRepository;
+import com.example.demo.dal.PrescriptionRepository;
+import com.example.demo.model.Prescription;
+import com.example.demo.model.user.Pharmacy;
+
+@Service
+public class PrescriptionService {
+	
+	@Autowired
+	PrescriptionRepository mPrescriptionRepo;
+	
+	
+	public List<Prescription> getPharmacyPrescriptions(Pharmacy p){
+		
+		return mPrescriptionRepo.findAllByPrescriptionPharmacyPharmacyID(p.getPharmacyID());
+	}
+}

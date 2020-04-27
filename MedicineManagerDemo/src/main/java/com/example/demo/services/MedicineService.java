@@ -21,6 +21,7 @@ public class MedicineService {
 	@Autowired
 	PharmacyRepository mPharmacyRepo;
 	
+	
 	public List<MedicineItem> updateMedicineList(List<MedicineItem> newMedList){
 		
 		List<MedicineItem> currentMedItemList = mMedItemRepo.findAll();
@@ -57,5 +58,18 @@ public class MedicineService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public MedicineItem getMedicineItemByBarcode(String barcode) {
+		return mMedItemRepo.findMedicineItemByBarcode(barcode);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//Stock Items
 
 }

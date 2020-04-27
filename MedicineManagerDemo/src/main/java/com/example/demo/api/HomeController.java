@@ -117,12 +117,12 @@ public class HomeController {
 	
 	@GetMapping("/patientPrescriptions")
 	public List<Prescription> getPatientPrescriptions() {
-		return mPrescriptionRepo.findPrescriptionsByPrescriptionPatientPatientID(2);
+		return mPrescriptionRepo.findAllByPrescriptionPatientPatientID(2);
 	}
 	
 	@GetMapping("/pharmacyPrescriptions")
 	public List<Prescription> getPharmacyPrescriptions(){
-		return mPrescriptionRepo.findPrescriptionsByPrescriptionPharmacyPharmacyID(1);
+		return mPrescriptionRepo.findAllByPrescriptionPharmacyPharmacyID(1);
 	}
 	
 

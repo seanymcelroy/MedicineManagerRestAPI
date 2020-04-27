@@ -16,16 +16,16 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
 //	@Query("SELECT pr FROM Prescription pr JOIN FETCH pr.patientOnPrescription")
 //	List<Prescription> findAll();
 	
-	List<Prescription> findPrescriptionsByPrescriptionPatient(Patient patient);
-	List<Prescription> findPrescriptionsByPrescriptionPharmacy(Pharmacy pharmacy);
+	List<Prescription> findAllByPrescriptionPatient(Patient patient);
+	List<Prescription> findAllByPrescriptionPharmacy(Pharmacy pharmacy);
 	
 	//Find list of prescriptions by patient
-	List<Prescription> findPrescriptionsByPrescriptionPatientPatientID(int patientId);
-	List<Prescription> findPrescriptionsByPrescriptionPatientPatientEmail(String patientEmail);
+	List<Prescription> findAllByPrescriptionPatientPatientID(int patientId);
+	List<Prescription> findAllByPrescriptionPatientPatientEmail(String patientEmail);
 	
 	//Find List of prescriptions by Pharmacy
-	List<Prescription> findPrescriptionsByPrescriptionPharmacyPharmacyID(int pharmacyId);
-	List<Prescription> findPrescriptionsByPrescriptionPharmacyPharmacyEmail(String pharmacyEmail);
+	List<Prescription> findAllByPrescriptionPharmacyPharmacyID(int pharmacyId);
+	List<Prescription> findAllByPrescriptionPharmacyPharmacyEmail(String pharmacyEmail);
 	
 //	@Query("SELECT pr FROM Prescription pr JOIN FETCH pr.patientOnPrescription")
 //	Optional<Prescription> findById();

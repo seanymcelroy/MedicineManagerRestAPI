@@ -21,4 +21,27 @@ public class PrescriptionService {
 		
 		return mPrescriptionRepo.findAllByPrescriptionPharmacyPharmacyID(p.getPharmacyID());
 	}
+	
+	
+	
+	public List<Prescription> getPatientPrescriptions(int patientID){
+		
+		return mPrescriptionRepo.findAllByPrescriptionPatientPatientID(patientID);
+	}
+	
+	//Can pharmacy x see patient y. only if patient y has sent prescription to pharmacy x
+	public boolean hasPharmacyAccessToPatient(int pharmacyID, int patientID) {
+		 List<Prescription> patientAllPrescriptions = getPatientPrescriptions(patientID);
+		for(Prescription patPrescriptions: patientAllPrescriptions) {
+			if(patPrescriptions.getPrescriptionPharmacy().getPharmacyID() == pharmacyID) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public Prescription getPrescriptionByID(int prescriptionID) {
+		return mPrescriptionRepo.findById(prescriptionID).get();
+	}
 }

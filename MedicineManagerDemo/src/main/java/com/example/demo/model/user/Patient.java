@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="patientID", scope = Integer.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient {
 	
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +50,8 @@ public class Patient {
 	LocalDate dateOfBirth;
 	
 	//Prescriptions
-	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIgnore
 	@OneToMany(mappedBy = "prescriptionPatient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Prescription> patientPrescriptions = new ArrayList<Prescription>();
 	

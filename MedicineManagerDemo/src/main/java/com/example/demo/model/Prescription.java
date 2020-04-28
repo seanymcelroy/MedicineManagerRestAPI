@@ -69,6 +69,14 @@ public class Prescription {
 		return prescriptionPatient;
 	}
 	
+	public String getPatientFirstName() {
+		return prescriptionPatient.getFirstName();
+	}
+	
+	public String getPatientLastName() {
+		return prescriptionPatient.getLastName();
+	}
+	
 	///////////////////
 	
 	

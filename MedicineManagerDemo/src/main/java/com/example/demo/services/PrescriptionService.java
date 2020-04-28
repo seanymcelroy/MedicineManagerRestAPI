@@ -25,9 +25,10 @@ public class PrescriptionService {
 	
 	
 	public List<Prescription> getPatientPrescriptions(int patientID){
-		
 		return mPrescriptionRepo.findAllByPrescriptionPatientPatientID(patientID);
 	}
+	
+	
 	
 	//Can pharmacy x see patient y. only if patient y has sent prescription to pharmacy x
 	public boolean hasPharmacyAccessToPatient(int pharmacyID, int patientID) {

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.example.demo.model.Appointment;
 import com.example.demo.model.Prescription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,10 +40,16 @@ public class Patient {
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int patientID;
 	
+	@Column(unique = true)
 	private String patientEmail;
 	
-	@JsonIgnore
+	
 	private String patientPassword;
+	
+	
+	@Column(unique = true)
+	private String patientPPSNumber;
+	private String gender;
 	private String firstName;
 	private String lastName;
 	private String patientAddress;
@@ -69,6 +77,20 @@ public class Patient {
 	}
 	
 	
+	//Appointments
+	@JsonIgnore
+	@OneToMany(mappedBy = "appointmentPatient", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Appointment> patientAppointments = new ArrayList<Appointment>();
+	
+	public void addAppointment(Appointment appointment) {
+		this.patientAppointments.add(appointment);
+		appointment.setAppointmentPatient(this);
+	}
+
+	
+	
+	//
+	
 	
 	public Patient() {
 		super();
@@ -78,23 +100,28 @@ public class Patient {
 	
 	
 	
-	public Patient(int patientID, String patientEmail, String patientPassword, String firstName, String lastName,
-			String patientAddress, String phoneNumber, LocalDate dateOfBirth) {
+
+
+
+
+
+	public Patient(int patientID, String patientEmail, String patientPassword, String patientPPSNumber, String gender,
+			String firstName, String lastName, String patientAddress, String phoneNumber, LocalDate dateOfBirth,
+			List<Prescription> patientPrescriptions, List<Appointment> patientAppointments) {
 		super();
 		this.patientID = patientID;
 		this.patientEmail = patientEmail;
 		this.patientPassword = patientPassword;
+		this.patientPPSNumber = patientPPSNumber;
+		this.gender = gender;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.patientAddress = patientAddress;
 		this.phoneNumber = phoneNumber;
 		this.dateOfBirth = dateOfBirth;
+		this.patientPrescriptions = patientPrescriptions;
+		this.patientAppointments = patientAppointments;
 	}
-
-
-
-
-
 	///Getters + Setters
 	
 	
@@ -118,9 +145,10 @@ public class Patient {
 	public void setPatientEmail(String patientEmail) {
 		this.patientEmail = patientEmail;
 	}
-	public String getPatientPassword() {
-		return patientPassword;
-	}
+//	@JsonIgnore
+//	public String getPatientPassword() {
+//		return patientPassword;
+//	}
 	public void setPatientPassword(String patientPassword) {
 		this.patientPassword = patientPassword;
 	}
@@ -154,9 +182,24 @@ public class Patient {
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	
-	
 
+//	@JsonIgnore
+//	public String getPatientPPSNumber() {
+//		return patientPPSNumber;
+//	}
+
+	public void setPatientPPSNumber(String patientPPSNumber) {
+		this.patientPPSNumber = patientPPSNumber;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
 	
 	
 	

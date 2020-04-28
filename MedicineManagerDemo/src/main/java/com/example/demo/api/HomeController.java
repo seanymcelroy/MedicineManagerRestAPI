@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dal.AppointmentRepository;
 import com.example.demo.dal.ItemStockLevelRepository;
 import com.example.demo.dal.MedicineItemRepository;
 import com.example.demo.dal.PatientRepository;
 import com.example.demo.dal.PharmacyRepository;
 import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.dal.PrescriptionRepository;
+import com.example.demo.model.Appointment;
 import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.MedicineItem;
 import com.example.demo.model.Prescription;
@@ -54,6 +56,10 @@ public class HomeController {
 	
 	@Autowired
 	ItemStockLevelRepository mItemStockLevelRepo;
+	
+	
+	@Autowired
+	AppointmentRepository mAppointmentRepo;
 	
 	
 	@GetMapping("/test")
@@ -266,5 +272,14 @@ public class HomeController {
 		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(1);
 	}
 	
+	
+	//Appointments
+	
+	@GetMapping("/getAllAppointments")
+	public List<Appointment> testGetAllAppointments(){
+		return mAppointmentRepo.findAll();
+	}
+	
+
 	
 }

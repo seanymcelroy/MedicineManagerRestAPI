@@ -44,6 +44,7 @@ public class Prescription {
 	@Id@GeneratedValue(strategy= GenerationType.IDENTITY)
 	int prescriptionID;
 	String patientMessage;
+	//5 Status. Submitted. Being Prepared. Ready for pickup. Fulfilled. Cancelled.
 	String prescriptionStatus= "Submitted";
 	Long prescriptionCreationDate = new Date().getTime();
 	Long prescriptionFulfilmentDate;

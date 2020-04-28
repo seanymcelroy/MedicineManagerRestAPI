@@ -5,10 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dal.AppointmentRepository;
 import com.example.demo.dal.PatientRepository;
+import com.example.demo.model.Appointment;
 import com.example.demo.model.Prescription;
 import com.example.demo.model.user.Patient;
 import com.example.demo.services.PrescriptionService;
@@ -24,6 +28,13 @@ public class MobileAppController {
 	
 	@Autowired
 	PatientRepository mPatientRepo;
+	
+	@Autowired
+	AppointmentRepository mAppointmentRepo;
+	
+	
+	
+	
 	
 	@GetMapping("/test")
 	public String testPrescriptionController() {
@@ -55,6 +66,20 @@ public class MobileAppController {
 //		return Medicines 
 //	}
 	
+	
+	@GetMapping("/getMyAppointments")
+	public List<Appointment> testGetAllAppointments(){
+		Patient p = mPatientRepo.getOne(1);
+		return mAppointmentRepo.findByAppointmentPatientPatientID(p.getPatientID());
+	}
+	
+	
+	@PostMapping("/createAppointment")
+	public void createNewAppointment(@RequestBody Appointment appointment){
+		Patient patientUser = mPatientRepo.getOne(1);
+		patientUser.addAppointment(appointment);
+		mPatientRepo.save(patientUser);
+	}
 }
 	
 	

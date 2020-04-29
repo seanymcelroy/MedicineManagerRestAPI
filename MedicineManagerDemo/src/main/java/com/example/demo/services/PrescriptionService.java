@@ -75,7 +75,7 @@ public class PrescriptionService {
 		
 	    	Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 	    	
-	    	MessageCreator msgCreator = Message.creator(new PhoneNumber("+353868469519"), new PhoneNumber(TWILIO_NUMBER), patientName + ", Your prescription is ready for pickup in " + PharmacyName + ".");	
+	    	MessageCreator msgCreator = Message.creator(new PhoneNumber("+353868469519"), new PhoneNumber(TWILIO_NUMBER), "Hi "+ patientName + ", Your prescription is ready for pickup in " + PharmacyName + ".");	
 	    	
 	    	msgCreator.create();
 	}

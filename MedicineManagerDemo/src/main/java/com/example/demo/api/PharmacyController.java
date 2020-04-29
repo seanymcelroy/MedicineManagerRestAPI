@@ -5,19 +5,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dal.ItemStockLevelRepository;
 import com.example.demo.dal.PharmacyRepository;
+import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.MedicineItem;
 import com.example.demo.model.Prescription;
+import com.example.demo.model.PrescriptionLineItem;
 import com.example.demo.model.user.Patient;
 import com.example.demo.model.user.Pharmacy;
 import com.example.demo.services.MedicineService;
@@ -31,7 +36,11 @@ public class PharmacyController {
 	@Autowired
 	ItemStockLevelRepository mStockRepo;
 	
-	@Autowired PharmacyRepository mPharmacyRepo;
+	@Autowired 
+	PharmacyRepository mPharmacyRepo;
+	
+	@Autowired
+	PrescriptionLineItemRepository mPrescriptionLineItemRepo;
 	
 	@Autowired MedicineService mMedicineService;
 	
@@ -117,4 +126,40 @@ public class PharmacyController {
 		
 		return null;	
 	}
+	
+	@GetMapping("/getPrescriptionLineItems/{prescriptionID}")
+	public List<PrescriptionLineItem> getLineItemsOnPrescription(@PathVariable("prescriptionID") int prescriptionId){
+		Pharmacy pharm = mPharmacyRepo.getOne(1);
+		
+		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(prescriptionId);
+		
+	}
+	
+	//fetch available medicine
+	@GetMapping("/getAvailableMedicine")
+	public List<MedicineItem> getAvailableMedicine(){
+		Pharmacy p = mPharmacyRepo.getOne(1);
+		
+		return mMedicineService.getPharmacyAvailableMedicine(p);
+		
+	}
+	
+	@PostMapping("/updatePrescription")
+	public void updatePrescription(@RequestBody Prescription prescription) {
+		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+		Prescription prescriptionStored=mPrescriptionService.getPrescriptionByID(prescription.getPrescriptionID());
+		
+		prescriptionStored.setPrescriptionStatus(prescription.getPrescriptionStatus());
+		prescriptionStored.setPrescriptionFulfilmentDate(prescription.getPrescriptionFulfilmentDate());
+		
+		mPrescriptionService.savePrescription(prescriptionStored);
+		
+		if (prescription.getPrescriptionStatus().equalsIgnoreCase("ready")){
+			//Twillio
+			mPrescriptionService.sendPatientTextForPickup(prescriptionStored);
+		}
+
+		
+	}
+	
 }

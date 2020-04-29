@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dal.ItemStockLevelRepository;
 import com.example.demo.dal.MedicineItemRepository;
 import com.example.demo.dal.PharmacyRepository;
 import com.example.demo.model.ItemStockLevel;
@@ -17,6 +18,9 @@ public class MedicineService {
 	
 	@Autowired
 	MedicineItemRepository mMedItemRepo;
+	
+	@Autowired
+	ItemStockLevelRepository mStockItemRepo;
 	
 	@Autowired
 	PharmacyRepository mPharmacyRepo;
@@ -59,12 +63,33 @@ public class MedicineService {
 		
 	}
 	
+	public List<String> fetchAllMedicineNames(){
+		
+		List <String> medItemNamesList = new ArrayList<>();
+		for(MedicineItem m: mMedItemRepo.findAll()) {
+			medItemNamesList.add(m.getTradeName());
+		}
+		return medItemNamesList;
+		
+	}
+	
 	public MedicineItem getMedicineItemByBarcode(String barcode) {
 		return mMedItemRepo.findMedicineItemByBarcode(barcode);
 	}
 	
 	
-	
+	public List<MedicineItem> getPharmacyAvailableMedicine(Pharmacy p){
+		
+		List<MedicineItem> availableMedicine = new ArrayList<>();
+		
+		for (ItemStockLevel stockItem: mStockItemRepo.findAllByItemStockPharmacy(p)) {
+			if (stockItem.getQuantity()>0) {
+				availableMedicine.add(stockItem.getItemStockMedicine());
+			}
+		}
+		return availableMedicine;
+		
+	}
 	
 	
 	

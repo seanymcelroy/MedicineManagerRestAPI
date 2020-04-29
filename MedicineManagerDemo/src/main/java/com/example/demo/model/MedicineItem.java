@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="medicineItemID", scope = Integer.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class MedicineItem {
 	
@@ -48,6 +49,18 @@ public class MedicineItem {
 	public void addItemStockMed(ItemStockLevel itemStocklvl) {
 		this.stockItems.add(itemStocklvl);
 		itemStocklvl.setItemStockMedicine(this);
+	}
+	
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "lineItemMedicine", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PrescriptionLineItem> prescriptionLineItems = new ArrayList<PrescriptionLineItem>();
+	
+	
+	public void addItemStockMed(PrescriptionLineItem lineItem) {
+		this.prescriptionLineItems.add(lineItem);
+		lineItem.setLineItemMedicine(this);
 	}
 	
 	

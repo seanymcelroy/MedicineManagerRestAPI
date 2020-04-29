@@ -158,6 +158,27 @@ public class HomeController {
 		
 		mPrescriptionRepo.save(p);
 	}
+	
+	@PostMapping("/updateAPrescription")
+	public void addaPrescription(@RequestBody Prescription p){
+		//Probably be in body of prescription
+		
+//		PrescriptionLineItem prescritionLineItem= new PrescriptionLineItem(8, "Before bed");
+//		MedicineItem medicineItem = mMedicineItemRepo.getOne(2);
+//		
+//		prescritionLineItem.setLineItemMedicine(medicineItem);
+//		
+//		p.addPrescriptionLineItem(prescritionLineItem);
+		
+		mPrescriptionRepo.save(p);
+	}
+	
+//	//May call this many times
+//	@PostMapping("/updatePrescriptionLineItems")
+//	public void updatePrescriptionLineItems(@RequestBody(PrescriptionLineItem) lineItems) {
+//		Pharmacy p= mPharmacyRepo.getOne(1);
+//		
+//	}
 
 
 	

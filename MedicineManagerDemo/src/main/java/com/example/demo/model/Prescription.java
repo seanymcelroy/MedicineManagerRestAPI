@@ -47,7 +47,7 @@ public class Prescription {
 	//5 Status. Submitted. Being Prepared. Ready for pickup. Fulfilled. Cancelled.
 	String prescriptionStatus= "Submitted";
 	Long prescriptionCreationDate = new Date().getTime();
-	Long prescriptionFulfilmentDate;
+	Long prescriptionFulfilmentDate = 0L;
 	String prescriptionImageURI;
 	String doctor;
 	
@@ -94,6 +94,10 @@ public class Prescription {
 
 	public void setPrescriptionPharmacy(Pharmacy prescriptionPharmacy) {
 		this.prescriptionPharmacy = prescriptionPharmacy;
+	}
+	
+	public String getPharmacyName() {
+		return prescriptionPharmacy.getPharmacyName();
 	}
 	
 	///////////

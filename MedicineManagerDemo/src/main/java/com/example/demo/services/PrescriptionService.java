@@ -9,9 +9,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dal.ItemStockLevelRepository;
 import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.dal.PrescriptionRepository;
+import com.example.demo.model.ItemStockLevel;
 import com.example.demo.model.Prescription;
+import com.example.demo.model.PrescriptionLineItem;
 import com.example.demo.model.user.Patient;
 import com.example.demo.model.user.Pharmacy;
 
@@ -30,6 +33,9 @@ public class PrescriptionService {
 	
 	@Autowired
 	PrescriptionRepository mPrescriptionRepo;
+	
+	@Autowired
+	ItemStockLevelRepository mItemStockLevelRepo;
 	
 	
 	public List<Prescription> getPharmacyPrescriptions(Pharmacy p){
@@ -65,6 +71,26 @@ public class PrescriptionService {
 		mPrescriptionRepo.save(p);
 	}
 	
+	public void adjustStock(Prescription p, Pharmacy pharmacy) {
+		List<PrescriptionLineItem> lineItems = p.getPrescriptionLineItems();
+		
+		for(PrescriptionLineItem lineItem: lineItems) {
+			int medId = lineItem.getLineItemMedicineID();
+			int quantityToBeRemoved = lineItem.getPrescriptionLineItemQty();
+			
+			ItemStockLevel itemStockLevel = mItemStockLevelRepo.findByItemStockMedicineMedicineItemIDAndItemStockPharmacy(medId, pharmacy);
+			if(itemStockLevel.getQuantity()-quantityToBeRemoved >0) {
+			int qtyToBeRemoved =itemStockLevel.getQuantity()-quantityToBeRemoved;
+			itemStockLevel.setQuantity(qtyToBeRemoved);
+		
+			}else {
+				itemStockLevel.setQuantity(0);
+				
+			}
+			mItemStockLevelRepo.save(itemStockLevel);
+		}
+	}
+	
 	
 	public void sendPatientTextForPickup(Prescription prescription) {
 		
@@ -76,6 +102,21 @@ public class PrescriptionService {
 	    	Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 	    	
 	    	MessageCreator msgCreator = Message.creator(new PhoneNumber("+353868469519"), new PhoneNumber(TWILIO_NUMBER), "Hi "+ patientName + ", Your prescription is ready for pickup in " + PharmacyName + ".");	
+	    	
+	    	msgCreator.create();
+	}
+
+
+
+	public void sendPatientTextCancelled(Prescription prescriptionStored) {
+		// TODO Auto-generated method stub
+		String patientName = prescriptionStored.getPatientFirstName();
+		String PharmacyName = prescriptionStored.getPharmacyName();
+		String phoneNumber = prescriptionStored.getPrescriptionPatient().getPhoneNumber();
+		
+	    	Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+	    	
+	    	MessageCreator msgCreator = Message.creator(new PhoneNumber("+353868469519"), new PhoneNumber(TWILIO_NUMBER), "Hi "+ patientName + ", Unfortunately Your prescription has been cancelled by" + PharmacyName + ".");	
 	    	
 	    	msgCreator.create();
 	}

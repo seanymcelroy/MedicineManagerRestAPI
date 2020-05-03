@@ -21,10 +21,12 @@ import com.example.demo.model.Prescription;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="pharmacyID", scope = Integer.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class Pharmacy {
 
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)

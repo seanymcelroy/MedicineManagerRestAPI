@@ -49,7 +49,7 @@ public class Prescription {
 	Long prescriptionCreationDate = new Date().getTime();
 	Long prescriptionFulfilmentDate = 0L;
 	String prescriptionImageURI;
-	String doctor;
+	String doctor="";
 	
 	
 	//Patient
@@ -116,10 +116,17 @@ public class Prescription {
 		prescriptionLineItem.setPrescriptionLineItemPrescription(this);
 	}
 	
+	public void removePrescriptionLineItem(PrescriptionLineItem prescriptionLineItem) {
+		this.prescriptionLineItems.remove(prescriptionLineItem);
+		prescriptionLineItem.setPrescriptionLineItemPrescription(null);
+	}
+	
 	//Getters + setters
+	
 	public List<PrescriptionLineItem> getPrescriptionLineItems() {
 		return prescriptionLineItems;
 	}
+	
 
 	public void setPrescriptionLineItems(List<PrescriptionLineItem> prescriptionLineItems) {
 		this.prescriptionLineItems = prescriptionLineItems;

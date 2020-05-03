@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dal.ItemStockLevelRepository;
+import com.example.demo.dal.PatientRepository;
 import com.example.demo.dal.PharmacyRepository;
 import com.example.demo.dal.PrescriptionLineItemRepository;
 import com.example.demo.model.ItemStockLevel;
@@ -40,6 +41,9 @@ public class PharmacyController {
 	PharmacyRepository mPharmacyRepo;
 	
 	@Autowired
+	PatientRepository mPatientRepo;
+	
+	@Autowired
 	PrescriptionLineItemRepository mPrescriptionLineItemRepo;
 	
 	@Autowired MedicineService mMedicineService;
@@ -53,6 +57,34 @@ public class PharmacyController {
 		return "Hi from pharmacy test method";
 	}
 	
+	@PostMapping("/updateMedicineStock")
+	public void updateMedicineStock(@RequestBody List<ItemStockLevel> updatedStock) {
+		Pharmacy p =mPharmacyRepo.getOne(1);
+		
+		List<Integer> stockItemIds= new ArrayList<Integer>();
+		
+		for(ItemStockLevel item: updatedStock) {
+			stockItemIds.add(item.getItemStockLevelID());
+		}
+		
+//		System.out.println(updatedStock.get(0).getQuantity());
+		
+		List<ItemStockLevel> mPharmaciesStockItems = mStockRepo.findAllById(stockItemIds);
+	
+		
+		for(ItemStockLevel updateditem: updatedStock) {
+			
+			ItemStockLevel itemInStorage = mPharmaciesStockItems.stream().
+		    filter(ItemStockLevel -> ItemStockLevel.getItemStockLevelID()==(updateditem.getItemStockLevelID())).
+		    findFirst().get();
+			
+			itemInStorage.setQuantity(updateditem.getQuantity());
+		}
+		
+		mStockRepo.saveAll(mPharmaciesStockItems);
+		
+		
+	}
 	
 	
 	@GetMapping("/allStock")
@@ -87,6 +119,18 @@ public class PharmacyController {
 		 return pharmacyPatients;
 	}
 	
+	
+	
+	@GetMapping("/getPatientDetailsById/{patientID}")
+	public Patient getPatientDetailsByPatient(@PathVariable("patientID") int patientID) {
+		Pharmacy p =mPharmacyRepo.getOne(1);
+			
+		if (mPrescriptionService.hasPharmacyAccessToPatient(p.getPharmacyID() ,patientID)==true) {
+			return mPatientRepo.getOne(patientID);
+		}
+		return null;
+		
+	}
 	
 	@GetMapping("/getPatientPrescriptions/{patientID}")
 	public List<Prescription> getMyPatientsPrescriptions(@PathVariable("patientID") int patientID){
@@ -144,22 +188,114 @@ public class PharmacyController {
 		
 	}
 	
-	@PostMapping("/updatePrescription")
-	public void updatePrescription(@RequestBody Prescription prescription) {
-		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
-		Prescription prescriptionStored=mPrescriptionService.getPrescriptionByID(prescription.getPrescriptionID());
+	
+	
+	@GetMapping("/prescriptioneditable/{prescriptionID}")
+	public boolean isPrescriptionEditable(@PathVariable("prescriptionID") int prescriptionID) {
+		Pharmacy p = mPharmacyRepo.getOne(1);
+		Prescription prescriptionInQuestion = mPrescriptionService.getPrescriptionByID(prescriptionID);
 		
-		prescriptionStored.setPrescriptionStatus(prescription.getPrescriptionStatus());
-		prescriptionStored.setPrescriptionFulfilmentDate(prescription.getPrescriptionFulfilmentDate());
-		
-		mPrescriptionService.savePrescription(prescriptionStored);
-		
-		if (prescription.getPrescriptionStatus().equalsIgnoreCase("ready")){
-			//Twillio
-			mPrescriptionService.sendPatientTextForPickup(prescriptionStored);
+		if(prescriptionInQuestion.getPrescriptionPharmacy().getPharmacyID()!= p.getPharmacyID()) {
+			return false;
 		}
-
+		
+		if(prescriptionInQuestion.getPrescriptionStatus().equalsIgnoreCase("fulfilled") || prescriptionInQuestion.getPrescriptionStatus().equalsIgnoreCase("cancelled")) {
+			return false;
+		}
+		
+		return true;
 		
 	}
 	
+	@PostMapping("/updatePrescription")
+	public void updatePrescription(@RequestBody Prescription updatePrescription) {
+		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+		Prescription prescriptionStored=mPrescriptionService.getPrescriptionByID(updatePrescription.getPrescriptionID());
+		
+		prescriptionStored.setPrescriptionStatus(updatePrescription.getPrescriptionStatus());
+		prescriptionStored.setDoctor(updatePrescription.getDoctor());
+		prescriptionStored.setPrescriptionFulfilmentDate(updatePrescription.getPrescriptionFulfilmentDate());
+		
+		mPrescriptionService.savePrescription(prescriptionStored);
+		
+		if (updatePrescription.getPrescriptionStatus().equalsIgnoreCase("fulfilled")){
+			System.out.println("hi");
+			System.out.println(prescriptionStored.getPrescriptionLineItems().size());
+			
+			mPrescriptionService.adjustStock(prescriptionStored, pharmacy);
+		}
+		
+		if (updatePrescription.getPrescriptionStatus().equalsIgnoreCase("ready")){
+			//Twillio
+			mPrescriptionService.sendPatientTextForPickup(prescriptionStored);
+		}
+		
+		if (updatePrescription.getPrescriptionStatus().equalsIgnoreCase("cancelled")){
+			//Twillio
+			mPrescriptionService.sendPatientTextCancelled(prescriptionStored);
+		}
+
+		//if cancelled
+		
+	}
+	
+	@PostMapping("/updatePrescriptionLineItems/{PrescriptionID}")
+	public void updatePrescriptionRemoveLineItems(@RequestBody List<PrescriptionLineItem> lineItemsOnPrescription, @PathVariable("PrescriptionID") int prescriptionID) {
+		
+		Prescription prescriptionStored=mPrescriptionService.getPrescriptionByID(prescriptionID);
+				
+		List<PrescriptionLineItem> itemsToRemove = new ArrayList<>();
+		for (PrescriptionLineItem lineItem : prescriptionStored.getPrescriptionLineItems()) {
+			itemsToRemove.add(lineItem);
+		}
+
+		for(PrescriptionLineItem lineItem : itemsToRemove) {
+			prescriptionStored.removePrescriptionLineItem(lineItem);
+		}
+		
+		mPrescriptionService.savePrescription(prescriptionStored);
+		
+	
+		
+		updateAddLineItems(lineItemsOnPrescription, prescriptionID);
+		
+		
+		
+	}
+	
+	public void updateAddLineItems(List<PrescriptionLineItem> lineItemsOnPrescription, int prescriptionID){
+			Prescription prescriptionStored2=mPrescriptionService.getPrescriptionByID(prescriptionID);
+		
+		for(PrescriptionLineItem lineItem : lineItemsOnPrescription) {
+			int medicineID = lineItem.getLineItemMedicineID();
+			String lineItemInstructions = lineItem.getPrescriptionLineItemInstructions();
+			int quantityOfMedicine = lineItem.getPrescriptionLineItemQty();
+			
+			
+			PrescriptionLineItem lineItemToBeAdded = new PrescriptionLineItem();
+			
+			lineItemToBeAdded.setLineItemMedicine(mMedicineService.getMedicineItemByID(medicineID));
+			lineItemToBeAdded.setPrescriptionLineItemInstructions(lineItemInstructions);
+			lineItemToBeAdded.setPrescriptionLineItemQty(quantityOfMedicine);
+			
+			prescriptionStored2.addPrescriptionLineItem(lineItemToBeAdded);
+		}
+		
+			mPrescriptionService.savePrescription(prescriptionStored2);
+	}
+	
+	
+	@GetMapping("/CheckLineItemStock/{medicineID}/{qtyToBeRemoved}")
+	public boolean enoughMedicineStock(@PathVariable("medicineID") int medicineID, @PathVariable("qtyToBeRemoved") int qtyToBeRemoved) {
+		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+		
+		ItemStockLevel itemStock = mStockRepo.findByItemStockMedicineMedicineItemIDAndItemStockPharmacy(medicineID, pharmacy);
+		
+		if(itemStock.getQuantity()-qtyToBeRemoved < 0) {
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
 }

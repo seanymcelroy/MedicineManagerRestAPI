@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,9 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -25,11 +29,15 @@ public class PrescriptionLineItem{
 	int prescriptionLineItemQty;
 	String prescriptionLineItemInstructions;
 	
+	@Transient
+	private int lineItemMedicineID;
+	//
+	
 	
 	
 	//Prescription
 	@JsonIdentityReference(alwaysAsId = true)
-	@ManyToOne(fetch =FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+	@ManyToOne(fetch =FetchType.LAZY)
 	@JoinColumn(name = "prescription_id")
 	Prescription prescriptionLineItemPrescription;
 
@@ -52,8 +60,23 @@ public class PrescriptionLineItem{
 	MedicineItem lineItemMedicine;
 	
 //	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIgnore
 	public MedicineItem getLineItemMedicine() {
+		this.lineItemMedicineID= lineItemMedicine.getMedicineItemID();
 		return lineItemMedicine;
+	}
+	
+	public int getLineItemMedicineID() {
+		int lineItemMedicineIDReturned = ((this.lineItemMedicine != null) ? lineItemMedicine.getMedicineItemID() : this.lineItemMedicineID);
+		return  lineItemMedicineIDReturned;
+	}
+
+	public void setLineItemMedicineID(int lineItemMedicineID) {
+		this.lineItemMedicineID = lineItemMedicineID;
+	}
+	
+	public String getLineItemMedicineTradeName() {
+		return this.lineItemMedicine.getTradeName();
 	}
 
 

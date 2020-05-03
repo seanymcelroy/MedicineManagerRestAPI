@@ -29,10 +29,22 @@ public class MedicineItem {
 	@Column(unique = true)
 	String barcode;
 	String tradeName;
-	
-	
-	
 	String medicineStatus = "Current";
+	
+	//
+	String gmsNumber;
+	String packSize;
+	String manufacturer;
+	String agent;
+	String pc;
+	String tradePrice;
+	String genericName;
+	String warnings;
+	String ingredientList1;
+	String atc1;
+	String counsel;
+	String strength;
+	String forms;
 	
 	
 	
@@ -111,6 +123,190 @@ public class MedicineItem {
 		this.medicineStatus = medicineStatus;
 	}
 
+	
+	public String getGmsNumber() {
+		return gmsNumber;
+	}
+
+
+
+	public void setGmsNumber(String gmsNumber) {
+		this.gmsNumber = gmsNumber;
+	}
+
+
+
+	public String getPackSize() {
+		return packSize;
+	}
+
+
+
+	public void setPackSize(String packSize) {
+		this.packSize = packSize;
+	}
+
+
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+
+
+	public String getAgent() {
+		return agent;
+	}
+
+
+
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+
+
+
+	public String getPc() {
+		return pc;
+	}
+
+
+
+	public void setPc(String pc) {
+		this.pc = pc;
+	}
+
+
+
+	public String getTradePrice() {
+		return tradePrice;
+	}
+
+
+
+	public void setTradePrice(String tradePrice) {
+		this.tradePrice = tradePrice;
+	}
+
+
+
+	public String getGenericName() {
+		return genericName;
+	}
+
+
+
+	public void setGenericName(String genericName) {
+		this.genericName = genericName;
+	}
+
+
+
+	public String getWarnings() {
+		return warnings;
+	}
+
+
+
+	public void setWarnings(String warnings) {
+		this.warnings = warnings;
+	}
+
+
+
+	public String getIngredientList1() {
+		return ingredientList1;
+	}
+
+
+
+	public void setIngredientList1(String ingredientList1) {
+		this.ingredientList1 = ingredientList1;
+	}
+
+
+
+	public String getAtc1() {
+		return atc1;
+	}
+
+
+
+	public void setAtc1(String atc1) {
+		this.atc1 = atc1;
+	}
+
+
+
+	public String getCounsel() {
+		return counsel;
+	}
+
+
+
+	public void setCounsel(String counsel) {
+		this.counsel = counsel;
+	}
+
+
+
+	public String getStrength() {
+		return strength;
+	}
+
+
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+
+
+	public String getForms() {
+		return forms;
+	}
+
+
+
+	public void setForms(String forms) {
+		this.forms = forms;
+	}
+
+
+
+	public List<ItemStockLevel> getStockItems() {
+		return stockItems;
+	}
+
+
+
+	public void setStockItems(List<ItemStockLevel> stockItems) {
+		this.stockItems = stockItems;
+	}
+
+
+
+	public List<PrescriptionLineItem> getPrescriptionLineItems() {
+		return prescriptionLineItems;
+	}
+
+
+
+	public void setPrescriptionLineItems(List<PrescriptionLineItem> prescriptionLineItems) {
+		this.prescriptionLineItems = prescriptionLineItems;
+	}
+
+
+
+	public void setTradeName(String tradeName) {
+		this.tradeName = tradeName;
+	}
 
 
 
@@ -147,92 +343,3 @@ public class MedicineItem {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Full data
-//	int category; //int
-//	String ipuEANCode;
-//	@Id
-//	String barcode;
-//	int gmsNum; //int
-//	String tradeName;
-//	String packSize;
-//	int packSizeNumber; //int
-//	String packSizeUnits;
-//	String manufacturer;
-//	String agent;
-//	double reimbursementPrice; //int
-//	double retailPriceRecommended; //double
-//	String VAT;
-//	String vatChange;
-//	String otherChange;
-//	String poisonClassification;
-//	String productAuthorization;
-//	
-//	double tradePrice; //think should be double
-//	String genericName;
-//	String dateBlank;
-//	
-//	String warningCodesForLabels;	
-//	
-//	//Text list of comma seperated ingredients
-//	String ingredientsListOne;
-//	String ingredientsListTwo;
-//	String ATCCode;
-//	String ATCCodetwo;
-//	String Dentist;
-//	
-//	String counsellingCode;
-//	String strength;
-//	String formsOfDrug;
-//	
-//	//Ingredients in each Field
-//	String ingredientOne;
-//	String ingredientTwo;
-//	String ingredientThree;
-//	String ingredientFour;
-//	String ingredientFive;
-//	String ingredientSix;
-//	String ingredientSeven;
-//	String ingredientEight;
-//	String ingredientNine;
-//	String ingredientTen;
-//	
-//	//ATC codes for ingredients
-//	String ingredAtcCodeOne;
-//	String ingredAtcCodeTwo;
-//	String ingredAtcCodeThree;
-//	String ingredAtcCodeFour;
-//	String ingredAtcCodeFive;
-//	String ingredAtcCodeSix;
-//	String ingredAtcCodeSeven;
-//	String ingredAtcCodeEight;
-//	String ingredAtcCodeNine;
-//	String ingredAtcCodeTen;
-//	
-//	//Extra Barcodes
-//	String barcodeExtraOne;
-//	String barcodeExtraTwo;
-//	String barcodeExtraThree;
-//	String barcodeExtraFour;
-//	String barcodeExtraFive;
-//	String barcodeExtraSix;
-//	
-//	String gmsOne;
-//	String eposCat;
-//	String eposDept;
-//	//String Pharmacovig;

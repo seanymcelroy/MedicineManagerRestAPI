@@ -16,6 +16,7 @@ import org.springframework.lang.NonNull;
 import com.example.demo.model.user.Pharmacy;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -37,7 +38,8 @@ public class ItemStockLevel {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="Pharmacy_id")
-	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIgnore
 	Pharmacy itemStockPharmacy;
 	
 	
@@ -46,6 +48,12 @@ public class ItemStockLevel {
 		
 	public ItemStockLevel() {
 		super();
+	}
+	
+	public ItemStockLevel(int id, int quantity) {
+		super();
+		this.quantity = quantity;
+		this.itemStockLevelID = id;
 	}
 	
 	public ItemStockLevel(int quantity, MedicineItem itemStockMedicine) {

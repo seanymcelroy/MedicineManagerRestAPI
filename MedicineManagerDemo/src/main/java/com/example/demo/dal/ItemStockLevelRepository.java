@@ -15,4 +15,6 @@ public interface ItemStockLevelRepository extends JpaRepository<ItemStockLevel, 
 //	List<ItemStockLevel> findAllByItemStockMedicine(int qty);
 	
 	List<ItemStockLevel> findAllByItemStockPharmacy(Pharmacy p);
+	
+	ItemStockLevel findByItemStockMedicineMedicineItemIDAndItemStockPharmacy(int id, Pharmacy p);
 }

@@ -77,6 +77,10 @@ public class MedicineService {
 		return mMedItemRepo.findMedicineItemByBarcode(barcode);
 	}
 	
+	public MedicineItem getMedicineItemByID(int id) {
+		return mMedItemRepo.getOne(id);
+	}
+	
 	
 	public List<MedicineItem> getPharmacyAvailableMedicine(Pharmacy p){
 		

@@ -9,7 +9,8 @@ public interface PatientRepository  extends JpaRepository<Patient, Integer>{
 
 
 	boolean existsByPatientEmail(String patientEmai);
-//	boolean existsPatientByPhoneNumber(String phoneNumber);
+	boolean existsPatientByPhoneNumber(String phoneNumber);
+	boolean existsPatientByPatientPPSNumber(String ppsNumber);
 	
 	Patient findByPatientEmail(String patientEmail);
 	

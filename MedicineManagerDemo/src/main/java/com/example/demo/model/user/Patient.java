@@ -43,11 +43,12 @@ public class Patient {
 	@Column(unique = true)
 	private String patientEmail;
 	
-	
+	@JsonIgnoreProperties
 	private String patientPassword;
 	
 	
 	@Column(unique = true)
+	@JsonIgnoreProperties
 	private String patientPPSNumber;
 	private String gender;
 	private String firstName;
@@ -145,10 +146,10 @@ public class Patient {
 	public void setPatientEmail(String patientEmail) {
 		this.patientEmail = patientEmail;
 	}
-//	@JsonIgnore
-//	public String getPatientPassword() {
-//		return patientPassword;
-//	}
+	
+	public String getPatientPassword() {
+		return patientPassword;
+	}
 	public void setPatientPassword(String patientPassword) {
 		this.patientPassword = patientPassword;
 	}
@@ -183,10 +184,10 @@ public class Patient {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-//	@JsonIgnore
-//	public String getPatientPPSNumber() {
-//		return patientPPSNumber;
-//	}
+	
+	public String getPatientPPSNumber() {
+		return patientPPSNumber;
+	}
 
 	public void setPatientPPSNumber(String patientPPSNumber) {
 		this.patientPPSNumber = patientPPSNumber;

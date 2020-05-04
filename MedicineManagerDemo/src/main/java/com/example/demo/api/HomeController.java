@@ -40,6 +40,9 @@ public class HomeController {
 	PharmacyRepository mPharmacyRepo;
 	
 	@Autowired
+	PatientRepository mPatientRepo;
+	
+	@Autowired
 	MedicineItemRepository mMedicineItemRepo;
 	
 	@PostMapping("/createNewPharmacy")
@@ -57,10 +60,31 @@ public class HomeController {
 		}
 	}
 	
-	@GetMapping("/getExamplePharmacy")
-	public Pharmacy getExamplePharmacy(){
+	//
+//	@GetMapping("/getExamplePharmacy")
+//	public Pharmacy getExamplePharmacy(){
+//		
+//		return mPharmacyRepo.getOne(1);
+//	}
+	//
+	
+	
+	@PostMapping("/createNewPatient")
+	public String createNewPatient(@RequestBody Patient patient) {
+		if (mPatientRepo.existsByPatientEmail(patient.getPatientEmail())==true || mPatientRepo.existsPatientByPhoneNumber(patient.getPhoneNumber()) || mPatientRepo.existsPatientByPatientPPSNumber(patient.getPatientPPSNumber())) {
+			return "User already exists with those details";
+		}
+		else {
+			mPatientRepo.save(patient);
+			return "New User created";
+		}
 		
-		return mPharmacyRepo.getOne(1);
 	}
 	
+	//
+//	@GetMapping("/getExamplePatient")
+//	public Patient getExamplePtient(){
+//		return mPatientRepo.getOne(1);
+//	}
+	//
 }

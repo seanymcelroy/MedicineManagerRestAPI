@@ -45,7 +45,7 @@ public class Prescription {
 	int prescriptionID;
 	String patientMessage;
 	//5 Status. Submitted. Being Prepared. Ready for pickup. Fulfilled. Cancelled.
-	String prescriptionStatus= "Submitted";
+	String prescriptionStatus= "submitted";
 	Long prescriptionCreationDate = new Date().getTime();
 	Long prescriptionFulfilmentDate = 0L;
 	String prescriptionImageURI;

@@ -41,6 +41,8 @@ public class Pharmacy {
 	String contactNumber;
 	String pharmacyAddress;
 	
+	String roles = "ROLE_PHARMACY";
+	
 	
 	//Prescriptions
 	@JsonIdentityReference(alwaysAsId = true)
@@ -169,7 +171,23 @@ public class Pharmacy {
 	public void setPharmacyAddress(String pharmacyAddress) {
 		this.pharmacyAddress = pharmacyAddress;
 	}
-	
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+
+//	public List<ItemStockLevel> getItemStockLevels() {
+//		return itemStockLevels;
+//	}
+//
+//	public void setItemStockLevels(List<ItemStockLevel> itemStockLevels) {
+//		this.itemStockLevels = itemStockLevels;
+//	}
+//	
 
 	
 	

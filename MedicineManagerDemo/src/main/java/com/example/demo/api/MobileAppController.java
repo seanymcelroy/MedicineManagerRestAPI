@@ -1,11 +1,16 @@
 package com.example.demo.api;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +55,6 @@ public class MobileAppController {
 	
 	
 	
-	
 	@GetMapping("/test")
 	public String testPrescriptionController() {
 		System.out.println("Mobiley app controller mthd test");
@@ -63,15 +67,18 @@ public class MobileAppController {
 	//Prescriptions
 	
 	@GetMapping("/getMyPrescriptions")
-	public List<Prescription> getMyPrescriptions(){
-		Patient p = mPatientRepo.getOne(1);
-		return mPrescriptionService.getPatientPrescriptions(p.getPatientID());
+	public List<Prescription> getMyPrescriptions(Principal p){
+		Patient pat = mPatientRepo.getOne(1);
+		//Patient pat = mPatientRepo.findByPatientEmail(p.getName());
+		return mPrescriptionService.getPatientPrescriptions(pat.getPatientID());
 		
 	}
 	
 	@GetMapping("/getMyPrescriptionLineItems/{prescriptionID}")
-	public List<PrescriptionLineItem> getPrescriptionLineItems(@PathVariable("prescriptionID") int prescriptionID){
-		Patient patient = mPatientRepo.getOne(1);
+	public List<PrescriptionLineItem> getPrescriptionLineItems(@PathVariable("prescriptionID") int prescriptionID, Principal p){
+		//Patient patient = mPatientRepo.getOne(1);
+		
+		Patient patient = mPatientRepo.findByPatientEmail(p.getName());
 		
 		Prescription storedPrescription = mPrescriptionService.getPrescriptionByID(prescriptionID);
 		return storedPrescription.getPrescriptionLineItems();
@@ -96,24 +103,27 @@ public class MobileAppController {
 	
 	
 	@GetMapping("/getMyAppointments")
-	public List<Appointment> testGetAllAppointments(){
-		Patient p = mPatientRepo.getOne(1);
+	public List<Appointment> testGetAllAppointments(Principal principal){
+//		Patient p = mPatientRepo.getOne(1);
+		Patient p = mPatientRepo.findByPatientEmail(principal.getName());
 		return mAppointmentRepo.findByAppointmentPatientPatientID(p.getPatientID());
 	}
 	
 	
 	@PostMapping("/createAppointment")
-	public void createNewAppointment(@RequestBody Appointment appointment){
-		Patient patientUser = mPatientRepo.getOne(1);
+	public void createNewAppointment(@RequestBody Appointment appointment, Principal principal){
+//		Patient patientUser = mPatientRepo.getOne(1);
+		Patient patientUser = mPatientRepo.findByPatientEmail(principal.getName());
 		patientUser.addAppointment(appointment);
 		mPatientRepo.save(patientUser);
 	}
 	
 	@PostMapping("/newPrescription/{pharmacyName}")
-	public void createNewPrescription(@RequestBody Prescription prescription, @PathVariable("pharmacyName") String pharmacyName) {
+	public void createNewPrescription(@RequestBody Prescription prescription, @PathVariable("pharmacyName") String pharmacyName, Principal principal) {
 		
 		//Will be replace with Principal when Security added
-		Patient patient = mPatientRepo.findById(1).get();
+//		Patient patient = mPatientRepo.findById(1).get();
+		Patient patient = mPatientRepo.findByPatientEmail(principal.getName());
 		
 		Pharmacy pharmacy = mPharmacyService.findPharmacyByName(pharmacyName);
 		
@@ -124,8 +134,10 @@ public class MobileAppController {
 	}
 	
 	@GetMapping("/allMyLineItems/{months}")
-	public List<PrescriptionLineItem> getAllMyLineItemsfromLastXMonths(@PathVariable("months") int months){
-		Patient patient = mPatientRepo.getOne(1);
+	public List<PrescriptionLineItem> getAllMyLineItemsfromLastXMonths(@PathVariable("months") int months, Principal principal){
+//		Patient patient = mPatientRepo.getOne(1);
+		
+		Patient patient = mPatientRepo.findByPatientEmail(principal.getName());
 		List<Prescription> allMyPrescriptions = mPrescriptionService.getPatientPrescriptions(patient.getPatientID());
 		
 	    PrescriptionComparator comparator = new PrescriptionComparator();

@@ -1,5 +1,6 @@
 package com.example.demo.api;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -58,8 +59,8 @@ public class PharmacyController {
 	}
 	
 	@PostMapping("/updateMedicineStock")
-	public void updateMedicineStock(@RequestBody List<ItemStockLevel> updatedStock) {
-		Pharmacy p =mPharmacyRepo.getOne(1);
+	public void updateMedicineStock(@RequestBody List<ItemStockLevel> updatedStock, Principal p) {
+		Pharmacy pharmacy = mPharmacyRepo.findByPharmacyEmail(p.getName()).get();
 		
 		List<Integer> stockItemIds= new ArrayList<Integer>();
 		
@@ -88,8 +89,8 @@ public class PharmacyController {
 	
 	
 	@GetMapping("/allStock")
-	public List<ItemStockLevel> getStockItems(){
-		Pharmacy p = mPharmacyRepo.getOne(1);
+	public List<ItemStockLevel> getStockItems(Principal principal){
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		return mStockRepo.findAllByItemStockPharmacy(p);
 	}
 	
@@ -100,8 +101,9 @@ public class PharmacyController {
 	}
 	
 	@GetMapping("/getMyPatients")
-	public List<Patient> getPharmacyPatients(){
-		 Pharmacy p =mPharmacyRepo.getOne(1);
+	public List<Patient> getPharmacyPatients(Principal principal){
+//		 Pharmacy p =mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		 List<Prescription> pharmacyPrescriptions = mPrescriptionService.getPharmacyPrescriptions(p);
 		 
 		 System.out.println(pharmacyPrescriptions.size());
@@ -122,9 +124,10 @@ public class PharmacyController {
 	
 	
 	@GetMapping("/getPatientDetailsById/{patientID}")
-	public Patient getPatientDetailsByPatient(@PathVariable("patientID") int patientID) {
-		Pharmacy p =mPharmacyRepo.getOne(1);
-			
+	public Patient getPatientDetailsByPatient(@PathVariable("patientID") int patientID, Principal principal) {
+//		Pharmacy p =mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
+		
 		if (mPrescriptionService.hasPharmacyAccessToPatient(p.getPharmacyID() ,patientID)==true) {
 			return mPatientRepo.getOne(patientID);
 		}
@@ -133,9 +136,9 @@ public class PharmacyController {
 	}
 	
 	@GetMapping("/getPatientPrescriptions/{patientID}")
-	public List<Prescription> getMyPatientsPrescriptions(@PathVariable("patientID") int patientID){
-		Pharmacy p =mPharmacyRepo.getOne(1);
-		
+	public List<Prescription> getMyPatientsPrescriptions(@PathVariable("patientID") int patientID, Principal principal){
+//		Pharmacy p =mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		//System.out.println(patientID);
 		//Check to see if pharmacy has a prescription with patient before allowing access to all prescription
 
@@ -150,15 +153,17 @@ public class PharmacyController {
 	
 	
 	@GetMapping("/getMyPrescriptions")
-	public List<Prescription> getMyPrescriptions(){
-		Pharmacy p = mPharmacyRepo.getOne(1);
+	public List<Prescription> getMyPrescriptions(Principal principal){
+//		Pharmacy p = mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		return mPrescriptionService.getPharmacyPrescriptions(p);
 	}
 	
 	
 	@GetMapping("/getPrescription/{prescriptionID}")
-	public Prescription getPrescription(@PathVariable("prescriptionID") int prescriptionID) {
-		Pharmacy pharm = mPharmacyRepo.getOne(1);
+	public Prescription getPrescription(@PathVariable("prescriptionID") int prescriptionID, Principal principal) {
+//		Pharmacy pharm = mPharmacyRepo.getOne(1);
+		Pharmacy pharm = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		
 		Prescription prescription = mPrescriptionService.getPrescriptionByID(prescriptionID);
 		Patient patient =prescription.getPrescriptionPatient();
@@ -172,8 +177,9 @@ public class PharmacyController {
 	}
 	
 	@GetMapping("/getPrescriptionLineItems/{prescriptionID}")
-	public List<PrescriptionLineItem> getLineItemsOnPrescription(@PathVariable("prescriptionID") int prescriptionId){
-		Pharmacy pharm = mPharmacyRepo.getOne(1);
+	public List<PrescriptionLineItem> getLineItemsOnPrescription(@PathVariable("prescriptionID") int prescriptionId, Principal principal){
+//		Pharmacy pharm = mPharmacyRepo.getOne(1);
+		Pharmacy pharm = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		
 		return mPrescriptionLineItemRepo.findAllByprescriptionLineItemPrescriptionPrescriptionID(prescriptionId);
 		
@@ -181,8 +187,9 @@ public class PharmacyController {
 	
 	//fetch available medicine
 	@GetMapping("/getAvailableMedicine")
-	public List<MedicineItem> getAvailableMedicine(){
-		Pharmacy p = mPharmacyRepo.getOne(1);
+	public List<MedicineItem> getAvailableMedicine(Principal principal){
+//		Pharmacy p = mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		
 		return mMedicineService.getPharmacyAvailableMedicine(p);
 		
@@ -191,8 +198,9 @@ public class PharmacyController {
 	
 	
 	@GetMapping("/prescriptioneditable/{prescriptionID}")
-	public boolean isPrescriptionEditable(@PathVariable("prescriptionID") int prescriptionID) {
-		Pharmacy p = mPharmacyRepo.getOne(1);
+	public boolean isPrescriptionEditable(@PathVariable("prescriptionID") int prescriptionID, Principal principal) {
+//		Pharmacy p = mPharmacyRepo.getOne(1);
+		Pharmacy p = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		Prescription prescriptionInQuestion = mPrescriptionService.getPrescriptionByID(prescriptionID);
 		
 		if(prescriptionInQuestion.getPrescriptionPharmacy().getPharmacyID()!= p.getPharmacyID()) {
@@ -208,8 +216,9 @@ public class PharmacyController {
 	}
 	
 	@PostMapping("/updatePrescription")
-	public void updatePrescription(@RequestBody Prescription updatePrescription) {
-		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+	public void updatePrescription(@RequestBody Prescription updatePrescription, Principal principal) {
+//		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+		Pharmacy pharmacy = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		Prescription prescriptionStored=mPrescriptionService.getPrescriptionByID(updatePrescription.getPrescriptionID());
 		
 		prescriptionStored.setPrescriptionStatus(updatePrescription.getPrescriptionStatus());
@@ -286,8 +295,9 @@ public class PharmacyController {
 	
 	
 	@GetMapping("/CheckLineItemStock/{medicineID}/{qtyToBeRemoved}")
-	public boolean enoughMedicineStock(@PathVariable("medicineID") int medicineID, @PathVariable("qtyToBeRemoved") int qtyToBeRemoved) {
-		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+	public boolean enoughMedicineStock(@PathVariable("medicineID") int medicineID, @PathVariable("qtyToBeRemoved") int qtyToBeRemoved, Principal principal) {
+//		Pharmacy pharmacy = mPharmacyRepo.getOne(1);
+		Pharmacy pharmacy = mPharmacyRepo.findByPharmacyEmail(principal.getName()).get();
 		
 		ItemStockLevel itemStock = mStockRepo.findByItemStockMedicineMedicineItemIDAndItemStockPharmacy(medicineID, pharmacy);
 		

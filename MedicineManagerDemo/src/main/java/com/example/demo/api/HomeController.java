@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +34,11 @@ import com.example.demo.model.Prescription;
 import com.example.demo.model.PrescriptionLineItem;
 import com.example.demo.model.user.Patient;
 import com.example.demo.model.user.Pharmacy;
+import com.example.demo.security.AuthenticationRequest;
+import com.example.demo.security.AuthenticationResponse;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.security.MyUserDetails;
+import com.example.demo.security.MyUserDetailsService;
 
 //Rest controller indicates data returned by each method will be written straight into response body. no template rendered
 //CrossOrigin allows resource sharing to other servers
@@ -44,6 +54,38 @@ public class HomeController {
 	
 	@Autowired
 	MedicineItemRepository mMedicineItemRepo;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private MyUserDetailsService mUserDetailsService;
+	
+	@Autowired
+	private JwtUtil jwtTokenUtil;
+	
+	
+	
+	@PostMapping("/authenticate")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
+		try {
+		authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+				);
+		} catch (BadCredentialsException e){
+			throw new Exception("Incorrect email or password", e);
+		}
+		
+		final UserDetails userDetails = mUserDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+		
+		
+		final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+		return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getAuthorities().toString()));
+		
+		
+	}
 	
 	@PostMapping("/createNewPharmacy")
 	public boolean createNewPharmacyUser(@RequestBody Pharmacy nuevoPharmacy){

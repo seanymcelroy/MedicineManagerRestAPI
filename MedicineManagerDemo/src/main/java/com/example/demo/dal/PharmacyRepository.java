@@ -15,6 +15,8 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Integer> {
 	
 	boolean existsPharmacyByPsiRegistrationNumber(String psiNum);
 	
+	Optional<Pharmacy> findByPharmacyEmail(String pharmacyEmail);
+	
 	
 	Pharmacy findByPharmacyName(String pharmacyName);
 	

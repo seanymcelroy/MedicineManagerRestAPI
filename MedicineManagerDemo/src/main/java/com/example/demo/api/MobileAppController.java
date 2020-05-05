@@ -68,8 +68,8 @@ public class MobileAppController {
 	
 	@GetMapping("/getMyPrescriptions")
 	public List<Prescription> getMyPrescriptions(Principal p){
-		Patient pat = mPatientRepo.getOne(1);
-		//Patient pat = mPatientRepo.findByPatientEmail(p.getName());
+//		Patient pat = mPatientRepo.getOne(1);
+		Patient pat = mPatientRepo.findByPatientEmail(p.getName());
 		return mPrescriptionService.getPatientPrescriptions(pat.getPatientID());
 		
 	}

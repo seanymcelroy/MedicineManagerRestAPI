@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -112,13 +113,13 @@ public class HomeController {
 	
 	
 	@PostMapping("/createNewPatient")
-	public String createNewPatient(@RequestBody Patient patient) {
+	public ResponseEntity<?> createNewPatient(@RequestBody Patient patient) throws Exception {
 		if (mPatientRepo.existsByPatientEmail(patient.getPatientEmail())==true || mPatientRepo.existsPatientByPhoneNumber(patient.getPhoneNumber()) || mPatientRepo.existsPatientByPatientPPSNumber(patient.getPatientPPSNumber())) {
-			return "User already exists with those details";
+			return null;
 		}
 		else {
 			mPatientRepo.save(patient);
-			return "New User created";
+			return createAuthenticationToken(new AuthenticationRequest(patient.getPatientEmail(), patient.getPatientPassword()));
 		}
 		
 	}

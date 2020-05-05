@@ -78,6 +78,10 @@ public class PrescriptionLineItem{
 	public String getLineItemMedicineTradeName() {
 		return this.lineItemMedicine.getTradeName();
 	}
+	
+	public String getLineItemMedicineGenericName() {
+		return this.lineItemMedicine.getGenericName();
+	}
 
 
 	public void setLineItemMedicine(MedicineItem lineItemMedicine) {

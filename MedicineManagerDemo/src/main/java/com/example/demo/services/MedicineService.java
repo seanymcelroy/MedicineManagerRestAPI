@@ -35,6 +35,7 @@ public class MedicineService {
 		
 		for(MedicineItem medItem : currentMedItemList) {
 			if(newMedList.contains(medItem)) {
+				medItem.setMedicineStatus("Current");
 				continue;
 			}
 			medItem.setMedicineStatus("End Of Life");
@@ -42,6 +43,7 @@ public class MedicineService {
 		
 		for(MedicineItem newmedItem : newMedList) {
 			if(currentMedItemList.contains(newmedItem)) {
+				
 				continue;
 			}
 			
